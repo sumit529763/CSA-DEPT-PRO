@@ -1,30 +1,116 @@
-import React from "react";
-import "./Notices.css";
+// src/pages/Notices/Notices.jsx
+import React, { useState, useEffect } from 'react';
+import SectionTitle from '../../components/UI/SectionTitle';
+import './Notices.css';
 
 export default function Notices() {
-  const notices = [
-    { title: "Exam Routine Released", date: "01-05-20XX", id: "NR-001", link: "#" },
-    { title: "Holiday Announcement", date: "10-04-20XX", id: "NR-002", link: "#" },
-  ];
+  const [notices, setNotices] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Preparing for your MongoDB API: const response = await api.get('/notices');
+    const fetchNotices = () => {
+      const mockNotices = [
+        {
+          _id: '101',
+          title: "Revised Examination Schedule for BCA 4th Semester",
+          date: "2026-01-12",
+          type: "Exam",
+          isUrgent: true,
+          fileUrl: "#"
+        },
+        {
+          _id: '102',
+          title: "Registration for Summer Internship Programme 2026",
+          date: "2026-01-08",
+          type: "General",
+          isUrgent: false,
+          fileUrl: "#"
+        },
+        {
+          _id: '103',
+          title: "Holiday Notice: Republic Day Celebration",
+          date: "2026-01-20",
+          type: "Holiday",
+          isUrgent: false,
+          fileUrl: "#"
+        },
+        {
+          _id: '104',
+          title: "Submission of Minor Project Synopsis - Batch 2023-26",
+          date: "2026-01-05",
+          type: "Academic",
+          isUrgent: true,
+          fileUrl: "#"
+        }
+      ];
+
+      setTimeout(() => {
+        setNotices(mockNotices);
+        setLoading(false);
+      }, 600);
+    };
+
+    fetchNotices();
+  }, []);
 
   return (
-    <main>
-      <section className="container" style={{ padding: "36px 0" }}>
-        <h2 className="section-heading">Notices</h2>
-        <p className="section-subtitle">Official notices from the department and university.</p>
+    <div className="notices-page-container container section-padding">
+      <SectionTitle 
+        title="Official Notices" 
+        subtitle="Access official circulars, academic schedules, and department announcements" 
+      />
 
-        <div style={{ marginTop: 16 }}>
-          {notices.map((n, i) => (
-            <article className="course-card" key={i} style={{ marginBottom: 12 }}>
-              <h3 className="course-title">{n.title}</h3>
-              <div style={{ color: "var(--muted)", fontSize: 0.85 + "rem" }}>{n.date} • {n.id}</div>
-              <p className="course-text" style={{ marginTop: 8 }}>
-                <a href={n.link}>Download / View</a>
-              </p>
-            </article>
-          ))}
+      <div className="notices-wrapper">
+        <div className="notices-header-row">
+          <div className="col-date">Date</div>
+          <div className="col-subject">Subject / Notice Title</div>
+          <div className="col-type">Category</div>
+          <div className="col-action">Action</div>
         </div>
-      </section>
-    </main>
+
+        {loading ? (
+          <div className="notices-loading">
+            {[1, 2, 3].map(n => <div key={n} className="skeleton-row"></div>)}
+          </div>
+        ) : notices.length > 0 ? (
+          <div className="notices-list">
+            {notices.map((notice) => (
+              <div key={notice._id} className={`notice-item ${notice.isUrgent ? 'urgent' : ''}`}>
+                <div className="col-date">
+                  <span className="date-box">
+                    <strong>{new Date(notice.date).getDate()}</strong>
+                    {new Date(notice.date).toLocaleString('en-US', { month: 'short' })}
+                  </span>
+                </div>
+                
+                <div className="col-subject">
+                  <h4 className="notice-title">
+                    {notice.title}
+                    {notice.isUrgent && <span className="badge-urgent">Urgent</span>}
+                    {new Date() - new Date(notice.date) < 604800000 && <span className="badge-new">New</span>}
+                  </h4>
+                  <p className="notice-id">Ref No: GIETU/CSA/2026/{notice._id}</p>
+                </div>
+
+                <div className="col-type">
+                  <span className={`type-tag ${notice.type.toLowerCase()}`}>{notice.type}</span>
+                </div>
+
+                <div className="col-action">
+                  <a href={notice.fileUrl} className="btn-view" target="_blank" rel="noreferrer">
+                    <i className="fas fa-file-pdf"></i> View
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="no-notices">
+            <p>No active notices at this time.</p>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

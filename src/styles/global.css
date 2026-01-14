@@ -91,9 +91,10 @@ a {
   box-shadow: 0 10px 20px rgba(0, 74, 173, 0.28);
   background-image: url(../assets/images/logo.png);
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size:cover;
   background-position: center;
 }
+
 
 .brand-text {
   display: flex;

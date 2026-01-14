@@ -1,3 +1,131 @@
-.notices { padding:2rem 0; }
-.notice-list { display:flex; flex-direction:column; gap:.75rem; margin-top:1rem; }
-.notice-item { background:white; padding:.85rem; border-radius:8px; box-shadow:var(--shadow-soft); display:flex; justify-content:space-between; }
+/* src/pages/Notices/Notices.css */
+
+.notices-wrapper {
+    margin-top: 40px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+.notices-header-row {
+    display: flex;
+    background: var(--color-primary-dark, #003366);
+    color: white;
+    padding: 15px 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+.notice-item {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    transition: background 0.3s ease;
+}
+
+.notice-item:hover {
+    background-color: #fcfdfe;
+}
+
+.notice-item.urgent {
+    border-left: 4px solid #dc3545;
+}
+
+/* Column Widths */
+.col-date { width: 100px; flex-shrink: 0; }
+.col-subject { flex-grow: 1; padding: 0 20px; }
+.col-type { width: 150px; text-align: center; }
+.col-action { width: 120px; text-align: right; }
+
+/* Date Box Styling */
+.date-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #f0f4f8;
+    color: var(--color-primary-dark);
+    padding: 8px;
+    border-radius: 8px;
+    width: 65px;
+    line-height: 1.2;
+}
+
+.date-box strong { font-size: 18px; }
+
+/* Content Styling */
+.notice-title {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.notice-id {
+    font-size: 12px;
+    color: #888;
+}
+
+/* Badges */
+.badge-urgent {
+    background: #dc3545;
+    color: white;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.badge-new {
+    background: #28a745;
+    color: white;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+/* Category Tags */
+.type-tag {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-weight: 500;
+}
+
+.type-tag.exam { background: #fff3cd; color: #856404; }
+.type-tag.general { background: #d1ecf1; color: #0c5460; }
+.type-tag.academic { background: #d4edda; color: #155724; }
+
+/* Action Button */
+.btn-view {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-accent, #007bff);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid var(--color-accent);
+    padding: 6px 15px;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.btn-view:hover {
+    background: var(--color-accent);
+    color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .notices-header-row { display: none; }
+    .notice-item { flex-direction: column; align-items: flex-start; gap: 15px; }
+    .col-date, .col-subject, .col-type, .col-action { width: 100%; text-align: left; padding: 0; }
+    .col-action { margin-top: 10px; }
+}

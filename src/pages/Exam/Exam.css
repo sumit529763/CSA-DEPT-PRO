@@ -1,0 +1,107 @@
+/* src/pages/Exam/Exam.css */
+
+.exam-alert {
+    display: flex;
+    align-items: center;
+    background: #fff5f5;
+    border-left: 5px solid #e53e3e;
+    padding: 15px 25px;
+    border-radius: 8px;
+    margin-bottom: 40px;
+    color: #c53030;
+}
+
+.alert-icon { margin-right: 15px; font-size: 20px; }
+
+.exam-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.tab-btn {
+    padding: 12px 25px;
+    border: none;
+    background: transparent;
+    font-weight: 600;
+    color: #718096;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.3s;
+}
+
+.tab-btn.active {
+    color: var(--color-accent, #007bff);
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--color-accent, #007bff);
+}
+
+.exam-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.exam-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    padding: 20px 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.exam-code {
+    background: #ebf8ff;
+    color: #2b6cb0;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+.exam-title {
+    font-size: 17px;
+    color: var(--color-primary-dark);
+}
+
+.exam-date { color: #718096; font-size: 14px; }
+
+.btn-download, .btn-view-res {
+    background: white;
+    border: 1px solid #cbd5e0;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-download:hover { background: var(--color-accent); color: white; border-color: var(--color-accent); }
+
+.resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.resource-card { text-align: center; }
+.res-icon { font-size: 40px; color: var(--color-accent); margin-bottom: 15px; }
+.res-link { display: block; margin-top: 15px; color: #3182ce; font-weight: 600; text-decoration: none; }
+
+@media (max-width: 768px) {
+    .exam-item { flex-direction: column; text-align: center; gap: 15px; }
+}

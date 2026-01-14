@@ -39,6 +39,9 @@ export default function Footer() {
             <li>
               <NavLink to="/placements">Placement Cell</NavLink>
             </li>
+            <li>
+              <NavLink to="/Contact">Contact Us</NavLink>
+            </li>
           </ul>
         </div>
 
