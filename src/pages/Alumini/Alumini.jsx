@@ -4,6 +4,8 @@ import SectionTitle from '../../components/UI/SectionTitle';
 import Card from '../../components/UI/Card';
 import './Alumini.css';
 
+import img from '../../assets/images/img.jpg'
+
 const alumniMembers = [
   {
     id: 1,
@@ -11,7 +13,7 @@ const alumniMembers = [
     batch: "2018-2021",
     position: "Senior Software Engineer",
     company: "Google, Mountain View",
-    image: "https://via.placeholder.com/150",
+    image: img,
     quote: "The foundation I built at CSA Department was instrumental in my journey to Silicon Valley."
   },
   {
@@ -20,7 +22,7 @@ const alumniMembers = [
     batch: "2019-2022",
     position: "Data Scientist",
     company: "Amazon, Berlin",
-    image: "https://via.placeholder.com/150",
+    image: img,
     quote: "From lab sessions to hackathons, the department provided the perfect environment for growth."
   },
   {
@@ -29,7 +31,7 @@ const alumniMembers = [
     batch: "2015-2018",
     position: "Full Stack Developer",
     company: "TCS, Mumbai",
-    image: "https://via.placeholder.com/150",
+    image: img,
     quote: "Proud to be an alumnus of GIET. The faculty support here is unparalleled."
   }
 ];

@@ -65,7 +65,7 @@ export default function Header() {
   return (
     <>
       <header className="top-bar">
-        <div className="container top-inner">
+        <div className="container top-inner right">
           {/* Brand section (remains the same) */}
           <div className="brand">
             <div className="brand-logo" aria-hidden />

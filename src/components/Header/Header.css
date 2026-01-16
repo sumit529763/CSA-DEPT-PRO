@@ -119,7 +119,12 @@
 /* --- Responsive Media Query --- */
 
 @media (max-width: 992px) {
-  /* On mobile/tablet, hide desktop navigation */
+  .right{
+    display: flex;
+    justify-content: space-between;
+  }
+
+
   .top-bar .desktop-nav {
     display: none;
   }

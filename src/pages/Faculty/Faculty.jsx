@@ -73,40 +73,42 @@ import SectionTitle from '../../components/UI/SectionTitle';
 import Card from '../../components/UI/Card';
 import './Faculty.css';
 
+import hodpic from '../../assets/images/hod-pic.jpeg'
+
 // Mock data: In the future, this will come from MongoDB
 const facultyData = {
   hod: {
-    name: "Dr. Arun Kumar Dash",
+    name: "Prof. Satya Narayan Dash",
     designation: "Head of Department",
     qualification: "Ph.D. in Computer Science",
     specialization: "Artificial Intelligence & Soft Computing",
     experience: "18+ Years",
-    image: "/assets/images/hod-pic.jpeg", // Using your existing assets path
+    image: hodpic, // Using your existing assets path
     email: "hod.csa@giet.edu"
   },
   teachingStaff: [
     {
       id: 1,
-      name: "Prof. S. R. Mohapatra",
+      name: "Ms. Soumya Ranjan Mishra",
       designation: "Assistant Professor",
       specialization: "Database Management & SQL",
-      image: "https://via.placeholder.com/300x350", 
-      email: "staff1@giet.edu"
+      image: hodpic, 
+      email: "soumyaranjan@giet.edu"
     },
     {
       id: 2,
-      name: "Dr. P. K. Swain",
+      name: "Placeholder Staff",
       designation: "Associate Professor",
       specialization: "Machine Learning & Python",
-      image: "https://via.placeholder.com/300x350",
+      image: hodpic,
       email: "staff2@giet.edu"
     },
     {
       id: 3,
-      name: "Prof. Amrita Mishra",
+      name: "Placeholder Staff",
       designation: "Assistant Professor",
       specialization: "Web Technologies & React",
-      image: "https://via.placeholder.com/300x350",
+      image: hodpic,
       email: "staff3@giet.edu"
     }
   ]

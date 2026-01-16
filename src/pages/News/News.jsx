@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import SectionTitle from '../../components/UI/SectionTitle';
 import Card from '../../components/UI/Card';
-// import api from '../../services/api';
 import './News.css';
 
 export default function News() {
@@ -14,8 +13,6 @@ export default function News() {
     const fetchNews = async () => {
       try {
         setLoading(true);
-        // Once your backend is live, this will be: const response = await api.get('/news');
-        // For now, we use professional placeholder data
         const mockNews = [
           {
             _id: '1',
