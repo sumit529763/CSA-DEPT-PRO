@@ -15,6 +15,7 @@ import News from "./pages/News/News.jsx";
 import Notices from "./pages/Notices/Notices.jsx";
 import Placement from "./pages/Placement/Placement.jsx";
 import Contact from "./pages/Contact/Contact.jsx";
+import Calendar from "./pages/AcademicCalendar/AcademicCalendar.jsx"
 
 import Home from "./pages/Home/Home.jsx";
 
@@ -35,6 +36,7 @@ export default function App() {
           <Route path="/notices" element={<Notices />} />
           <Route path="/placements" element={<Placement />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/calendar" element={<Calendar />} />
         </Routes>
       </main>
       <Footer />

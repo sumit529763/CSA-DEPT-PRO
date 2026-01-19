@@ -20,7 +20,7 @@ export default function News() {
             date: "2026-02-15",
             category: "Event",
             description: "The CSA Department is proud to host the upcoming national conference featuring industry experts from Google and Microsoft.",
-            image: "https://images.unsplash.com/photo-1591115765373-520b7a217294?q=80&w=1000&auto=format&fit=crop"
+            image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1000&auto=format&fit=crop"
           },
           {
             _id: '2',
@@ -28,7 +28,7 @@ export default function News() {
             date: "2026-01-10",
             category: "Achievement",
             description: "Our 3rd-year students won the first prize in the fintech category at the national level hackathon held in Bangalore.",
-            image: "https://images.unsplash.com/photo-1523240715639-99a8088fb9a9?q=80&w=1000&auto=format&fit=crop"
+            image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1000&auto=format&fit=crop"
           },
           {
             _id: '3',

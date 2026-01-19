@@ -133,5 +133,69 @@
   .hamburger-toggle {
     display: block;
   }
+
+  /* added new css */
+  .brand-subtitle p {
+    font-size: 0.7rem; /* Shrink text slightly so it doesn't overflow */
+    max-width: 250px;   /* Prevents the long university name from hitting the hamburger icon */
+    white-space: normal; /* Allows wrapping if the name is too long */
+  }
 }
 
+/* added new css */
+.brand-subtitle {
+  display: flex;
+  flex-direction: column; /* Stack them vertically */
+  gap: 2px; /* Small space between the university name and location */
+}
+
+.brand-subtitle p {
+  margin: 0;
+  padding: 0;
+  font-size: 0.85rem; /* Base size for desktop */
+  line-height: 1.2;
+  color: #555; /* Adjust color as per your theme */
+}
+
+
+/* ===== Mobile Brand Text Toggle ===== */
+.desktop-only {
+  display: inline;
+}
+
+.mobile-only {
+  display: none;
+}
+
+/* ===== Mobile Header Fix ===== */
+@media (max-width: 992px) {
+  .desktop-only {
+    display: none;
+  }
+
+  .mobile-only {
+    display: inline;
+  }
+
+  /* keep brand left, actions right */
+  .top-inner.right {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* force profile + hamburger to right corner */
+  .header-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* added new css */
+  .brand-subtitle p {
+    font-size: 0.7rem; /* Shrink text slightly so it doesn't overflow */
+    max-width: 250px;   /* Prevents the long university name from hitting the hamburger icon */
+    white-space: normal; /* Allows wrapping if the name is too long */
+  }
+}

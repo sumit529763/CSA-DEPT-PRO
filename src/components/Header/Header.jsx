@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from "react"; 
+import React, { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 // Note: We are commenting out the Auth import, but it is ready for integration later
-// import { useAuth } from "../../context/AuthContext.jsx"; 
+// import { useAuth } from "../../context/AuthContext.jsx";
 import "./Header.css";
 
 // AnnouncementBar is implemented inside the same file
@@ -10,17 +10,21 @@ function AnnouncementBar() {
   return (
     <section className="announcement-bar" aria-label="Announcements">
       <div className="container announcement-inner">
-        <div className="announcement-label"><i className="fas fa-bullhorn" aria-hidden /> Announcements</div>
+        <div className="announcement-label">
+          <i className="fas fa-bullhorn" aria-hidden /> Announcements
+        </div>
         <div className="announcement-track">
-          <p className="announcement-text">{text} &nbsp; | &nbsp; {text}</p>
+          <p className="announcement-text">
+            {text} &nbsp; | &nbsp; {text}
+          </p>
         </div>
       </div>
     </section>
   );
 }
 
-
-const navLinks = [ // Centralized link data
+const navLinks = [
+  // Centralized link data
   { to: "/", label: "Home", end: true },
   { to: "/news", label: "News" },
   { to: "/notices", label: "Notices" },
@@ -33,9 +37,9 @@ const navLinks = [ // Centralized link data
 
 export default function Header() {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false); // Mobile state
-  
+
   // Refs for A11y focus control
-  const menuRef = useRef(null); 
+  const menuRef = useRef(null);
   const toggleRef = useRef(null); // Ref for the Hamburger button
 
   // 1. A11y: Handles ESC key to close menu
@@ -51,16 +55,15 @@ export default function Header() {
   useEffect(() => {
     if (!isMobileMenuOpen) {
       // When closing, explicitly move focus back to the button.
-      toggleRef.current?.focus(); 
+      toggleRef.current?.focus();
     } else {
       // When opening, focus the first link for keyboard users.
       menuRef.current?.querySelector(".mobile-link")?.focus();
     }
-  }, [isMobileMenuOpen]); 
-  
+  }, [isMobileMenuOpen]);
+
   // Helper to close menu after clicking a link
   const closeMenu = () => setMobileMenuOpen(false);
-
 
   return (
     <>
@@ -70,19 +73,27 @@ export default function Header() {
           <div className="brand">
             <div className="brand-logo" aria-hidden />
             <div className="brand-text">
-              <span className="brand-title">Department of Computer Science &amp; Application</span>
-              <span className="brand-subtitle">GIET University, Gunupur</span>
+              <span className="brand-title desktop-only">
+                Department of Computer Science &amp; Application
+              </span>
+              <span className="brand-title mobile-only">CSA Department</span>
+              <span className="brand-subtitle">
+                <p>Gandhi Institute Of Engineering And Technology University</p>
+                <p> Odisha, Gunupur-765022</p>
+              </span>
             </div>
           </div>
 
           {/* DESKTOP NAVIGATION (Visible on large screens) */}
           <nav className="navbar desktop-nav" aria-label="Primary navigation">
             {navLinks.map((l) => (
-              <NavLink 
-                key={l.to} 
-                to={l.to} 
-                end={l.end} 
-                className={({isActive}) => (isActive ? "nav-link active" : "nav-link")}
+              <NavLink
+                key={l.to}
+                to={l.to}
+                end={l.end}
+                className={({ isActive }) =>
+                  isActive ? "nav-link active" : "nav-link"
+                }
               >
                 {l.label}
               </NavLink>
@@ -91,7 +102,12 @@ export default function Header() {
 
           <div className="header-actions">
             {/* Admin icon (ready for Auth integration) */}
-            <NavLink to="/login" className="admin-icon" title="Admin Login" aria-label="Admin Login">
+            <NavLink
+              to="/login"
+              className="admin-icon"
+              title="Admin Login"
+              aria-label="Admin Login"
+            >
               <i className="fas fa-user-circle" aria-hidden />
             </NavLink>
 
@@ -102,7 +118,7 @@ export default function Header() {
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-menu"
               aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-              onClick={() => setMobileMenuOpen(o => !o)}
+              onClick={() => setMobileMenuOpen((o) => !o)}
             >
               <span /> {/* CSS will style these spans as lines */}
               <span />
@@ -115,15 +131,15 @@ export default function Header() {
       <AnnouncementBar />
 
       {/* MOBILE MENU OVERLAY */}
-      <div 
-        className={`mobile-menu ${isMobileMenuOpen ? "show" : ""}`} 
+      <div
+        className={`mobile-menu ${isMobileMenuOpen ? "show" : ""}`}
         id="mobile-menu"
         aria-hidden={!isMobileMenuOpen}
         ref={menuRef} // <--- Ref is attached here for focus management
       >
         <div className="mobile-menu-header">
           <span className="mobile-menu-brand">CSA Department</span>
-          <button 
+          <button
             className="mobile-close-btn"
             onClick={closeMenu}
             aria-label="Close menu"
@@ -134,17 +150,23 @@ export default function Header() {
 
         <nav className="mobile-nav-list">
           {navLinks.map((l) => (
-            <NavLink 
-              key={l.to} 
-              to={l.to} 
-              end={l.end} 
-              className={({isActive}) => (isActive ? "mobile-link active" : "mobile-link")}
+            <NavLink
+              key={l.to}
+              to={l.to}
+              end={l.end}
+              className={({ isActive }) =>
+                isActive ? "mobile-link active" : "mobile-link"
+              }
               onClick={closeMenu} // Close menu when a link is clicked
             >
               {l.label}
             </NavLink>
           ))}
-          <NavLink to="/login" className="mobile-link admin-mobile-link" onClick={closeMenu}>
+          <NavLink
+            to="/login"
+            className="mobile-link admin-mobile-link"
+            onClick={closeMenu}
+          >
             Admin Login
           </NavLink>
         </nav>
@@ -152,10 +174,10 @@ export default function Header() {
 
       {/* MOBILE BACKDROP */}
       {isMobileMenuOpen && (
-        <div 
-          className="mobile-backdrop" 
-          onClick={closeMenu} 
-          aria-hidden="true" 
+        <div
+          className="mobile-backdrop"
+          onClick={closeMenu}
+          aria-hidden="true"
         />
       )}
     </>
