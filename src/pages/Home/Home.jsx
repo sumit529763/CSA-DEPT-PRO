@@ -52,7 +52,7 @@ export default function Home() {
 
             <div className="image-overlay" />
 
-            <img
+            {/* <img
 
               src={safeSrc(csadept)}
 
@@ -61,8 +61,9 @@ export default function Home() {
               className="hero-image"
 
               onError={(e) => (e.currentTarget.src = PLACEHOLDER)}
+            /> */}
 
-            />
+            <video src="https://www.giet.edu/wp-content/uploads/2021/03/main-banner-optimized.mp4" className="hero-image" autoPlay muted loop playsInline />
 
           </div>
 
