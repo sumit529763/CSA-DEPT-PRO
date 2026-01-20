@@ -9,7 +9,6 @@ export default function Events() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Future API call: const response = await api.get('/events');
     const fetchEvents = () => {
       const mockEvents = [
         {
@@ -50,7 +49,7 @@ export default function Events() {
       setTimeout(() => {
         setEvents(mockEvents);
         setLoading(false);
-      }, 700);
+      }, 1000); // 1s delay for professional shimmer effect
     };
     fetchEvents();
   }, []);
@@ -64,7 +63,21 @@ export default function Events() {
 
       <div className="events-grid">
         {loading ? (
-          <div className="loader">Loading Events...</div>
+          // --- SKELETON LOADING STATE ---
+          [1, 2, 3].map((n) => (
+            <Card key={n} className="event-card skeleton-card">
+              <div className="skeleton ev-img-sk"></div>
+              <div className="event-content">
+                <div className="skeleton sk-ev-date"></div> {/* Date-tag placeholder */}
+                <div className="event-main-info">
+                  <div className="skeleton sk-text"></div>      {/* Title placeholder */}
+                  <div className="skeleton sk-text"></div>      {/* Description line 1 */}
+                  <div className="skeleton sk-text-short"></div>{/* Description line 2 */}
+                  <div className="skeleton sk-button"></div>    {/* Register button placeholder */}
+                </div>
+              </div>
+            </Card>
+          ))
         ) : events.map((event) => (
           <Card key={event._id} className={`event-card ${event.status.toLowerCase()}`}>
             <div className="event-img-box">

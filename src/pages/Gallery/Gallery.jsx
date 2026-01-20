@@ -1,5 +1,5 @@
 // src/pages/Gallery/Gallery.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SectionTitle from '../../components/UI/SectionTitle';
 import './Gallery.css';
 
@@ -14,6 +14,13 @@ const galleryImages = [
 
 export default function Gallery() {
   const [filter, setFilter] = useState('All');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulating delay for image metadata fetching
+    const timer = setTimeout(() => setLoading(false), 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const filteredImages = filter === 'All' 
     ? galleryImages 
@@ -28,35 +35,43 @@ export default function Gallery() {
         subtitle="Exploring the vibrant life and world-class facilities of the CSA Department" 
       />
 
-      {/* Filter Bar */}
       <div className="gallery-filter-bar">
         {categories.map(cat => (
           <button 
             key={cat} 
             className={`filter-btn ${filter === cat ? 'active' : ''}`}
             onClick={() => setFilter(cat)}
+            disabled={loading}
           >
             {cat}
           </button>
         ))}
       </div>
 
-      {/* Gallery Grid */}
       <div className="gallery-grid">
-        {filteredImages.map((image) => (
-          <div key={image.id} className="gallery-item">
-            <div className="gallery-img-container">
-              <img src={image.url} alt={image.title} loading="lazy" />
-              <div className="gallery-overlay">
-                <span className="gallery-cat-label">{image.category}</span>
-                <h4 className="gallery-img-title">{image.title}</h4>
-                <button className="gallery-zoom-icon">
-                  <i className="fas fa-search-plus"></i>
-                </button>
+        {loading ? (
+          // --- SKELETON LOADING STATE ---
+          [1, 2, 3, 4, 5, 6].map(n => (
+            <div key={n} className="gallery-item skeleton-item">
+              <div className="skeleton sk-gallery-img"></div>
+            </div>
+          ))
+        ) : (
+          filteredImages.map((image) => (
+            <div key={image.id} className="gallery-item">
+              <div className="gallery-img-container">
+                <img src={image.url} alt={image.title} loading="lazy" />
+                <div className="gallery-overlay">
+                  <span className="gallery-cat-label">{image.category}</span>
+                  <h4 className="gallery-img-title">{image.title}</h4>
+                  <button className="gallery-zoom-icon">
+                    <i className="fas fa-search-plus"></i>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );

@@ -122,3 +122,25 @@
         grid-template-columns: 1fr;
     }
 }
+
+
+
+/* Gallery Skeleton Specifics */
+.sk-gallery-img {
+    width: 100%;
+    aspect-ratio: 4 / 3; /* Maintains standard photo proportions */
+    border-radius: 12px;
+}
+
+.skeleton-item {
+    pointer-events: none;
+    background: transparent;
+    border: none;
+}
+
+/* Ensure the grid doesn't shift on mobile */
+@media (max-width: 768px) {
+    .sk-gallery-img {
+        aspect-ratio: 16 / 9;
+    }
+}

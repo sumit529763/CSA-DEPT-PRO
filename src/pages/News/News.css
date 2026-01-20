@@ -142,3 +142,29 @@
     margin-bottom: 20px;
     opacity: 0.3;
 }
+
+
+/* News-specific Skeleton sizing */
+.skeleton-card {
+    border: none;
+    box-shadow: var(--shadow-soft);
+    pointer-events: none;
+}
+
+.news-image-sk {
+    width: 100%;
+    height: 200px; /* Matches your news-image height */
+    border-radius: 12px 12px 0 0;
+}
+
+.skeleton-card .news-content {
+    padding: 20px;
+}
+
+/* Ensure the grid doesn't collapse while loading */
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}

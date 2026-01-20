@@ -8,49 +8,20 @@ export default function Notices() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Preparing for your MongoDB API: const response = await api.get('/notices');
     const fetchNotices = () => {
+      // Mock data representing your future MongoDB response
       const mockNotices = [
-        {
-          _id: '101',
-          title: "Revised Examination Schedule for BCA 4th Semester",
-          date: "2026-01-12",
-          type: "Exam",
-          isUrgent: true,
-          fileUrl: "#"
-        },
-        {
-          _id: '102',
-          title: "Registration for Summer Internship Programme 2026",
-          date: "2026-01-08",
-          type: "General",
-          isUrgent: false,
-          fileUrl: "#"
-        },
-        {
-          _id: '103',
-          title: "Holiday Notice: Republic Day Celebration",
-          date: "2026-01-20",
-          type: "Holiday",
-          isUrgent: false,
-          fileUrl: "#"
-        },
-        {
-          _id: '104',
-          title: "Submission of Minor Project Synopsis - Batch 2023-26",
-          date: "2026-01-05",
-          type: "Academic",
-          isUrgent: true,
-          fileUrl: "#"
-        }
+        { _id: '101', title: "Revised Examination Schedule for BCA 4th Semester", date: "2026-01-12", type: "Exam", isUrgent: true, fileUrl: "#" },
+        { _id: '102', title: "Registration for Summer Internship Programme 2026", date: "2026-01-08", type: "General", isUrgent: false, fileUrl: "#" },
+        { _id: '103', title: "Holiday Notice: Republic Day Celebration", date: "2026-01-20", type: "Holiday", isUrgent: false, fileUrl: "#" },
+        { _id: '104', title: "Submission of Minor Project Synopsis - Batch 2023-26", date: "2026-01-05", type: "Academic", isUrgent: true, fileUrl: "#" }
       ];
 
       setTimeout(() => {
         setNotices(mockNotices);
         setLoading(false);
-      }, 600);
+      }, 1500); // Increased time slightly to appreciate the professional loading effect
     };
-
     fetchNotices();
   }, []);
 
@@ -70,8 +41,19 @@ export default function Notices() {
         </div>
 
         {loading ? (
-          <div className="notices-loading">
-            {[1, 2, 3].map(n => <div key={n} className="skeleton-row"></div>)}
+          <div className="notices-list">
+            {/* 3 Skeleton Rows that match the design structure */}
+            {[1, 2, 3].map(n => (
+              <div key={n} className="notice-item skeleton-row">
+                <div className="col-date"><div className="skeleton skeleton-box"></div></div>
+                <div className="col-subject">
+                  <div className="skeleton skeleton-title"></div>
+                  <div className="skeleton skeleton-subtitle"></div>
+                </div>
+                <div className="col-type"><div className="skeleton skeleton-badge"></div></div>
+                <div className="col-action"><div className="skeleton skeleton-btn"></div></div>
+              </div>
+            ))}
           </div>
         ) : notices.length > 0 ? (
           <div className="notices-list">

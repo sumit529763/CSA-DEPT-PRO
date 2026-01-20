@@ -8,7 +8,6 @@ export default function News() {
   const [newsList, setNewsList] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Helper to simulate or fetch news from your future MongoDB API
   useEffect(() => {
     const fetchNews = async () => {
       try {
@@ -40,11 +39,10 @@ export default function News() {
           }
         ];
         
-        // Simulating a network delay for professional feel
         setTimeout(() => {
           setNewsList(mockNews);
           setLoading(false);
-        }, 800);
+        }, 1200); // 1.2s delay to show the professional shimmer
       } catch (error) {
         console.error("Error fetching news:", error);
         setLoading(false);
@@ -61,14 +59,24 @@ export default function News() {
         subtitle="Stay updated with the latest happenings in the CSA Department" 
       />
 
-      {loading ? (
-        <div className="loader-container">
-          <div className="spinner"></div>
-          <p>Loading latest updates...</p>
-        </div>
-      ) : newsList.length > 0 ? (
-        <div className="news-grid">
-          {newsList.map((item) => (
+      <div className="news-grid">
+        {loading ? (
+          // --- SKELETON LOADING STATE ---
+          [1, 2, 3].map((n) => (
+            <Card key={n} className="news-card skeleton-card">
+              <div className="skeleton news-image-sk"></div>
+              <div className="news-content">
+                <div className="skeleton sk-text-short"></div> {/* Date placeholder */}
+                <div className="skeleton sk-text"></div>       {/* Title line 1 */}
+                <div className="skeleton sk-text"></div>       {/* Title line 2 */}
+                <div className="skeleton sk-text"></div>       {/* Description line 1 */}
+                <div className="skeleton sk-button"></div>     {/* Button placeholder */}
+              </div>
+            </Card>
+          ))
+        ) : newsList.length > 0 ? (
+          // --- ACTUAL DATA STATE ---
+          newsList.map((item) => (
             <Card key={item._id} className="news-card">
               <div className="news-image-wrapper">
                 <img src={item.image} alt={item.title} className="news-image" />
@@ -85,15 +93,15 @@ export default function News() {
                 </button>
               </div>
             </Card>
-          ))}
-        </div>
-      ) : (
-        <div className="empty-state">
-          <i className="fas fa-newspaper-o"></i>
-          <h3>No News Available</h3>
-          <p>Check back later for fresh updates from the department.</p>
-        </div>
-      )}
+          ))
+        ) : (
+          <div className="empty-state">
+            <i className="fas fa-newspaper"></i>
+            <h3>No News Available</h3>
+            <p>Check back later for fresh updates from the department.</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

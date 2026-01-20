@@ -184,3 +184,38 @@
     height: 200px;
   }
 }
+
+
+
+/* Faculty Specific Skeletons */
+.sk-hod-img {
+    width: 250px;
+    height: 300px;
+    border-radius: 12px;
+}
+
+.sk-faculty-img {
+    width: 100%;
+    height: 220px;
+    border-radius: 12px 12px 0 0;
+}
+
+.hod-card.skeleton-card {
+    display: flex;
+    gap: 30px;
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+}
+
+@media (max-width: 768px) {
+    .hod-card.skeleton-card {
+        flex-direction: column;
+        align-items: center;
+    }
+    .sk-hod-img {
+        width: 100%;
+        height: 250px;
+    }
+}

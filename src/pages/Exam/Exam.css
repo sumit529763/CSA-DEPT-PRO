@@ -105,3 +105,31 @@
 @media (max-width: 768px) {
     .exam-item { flex-direction: column; text-align: center; gap: 15px; }
 }
+
+
+
+/* --- Exam Skeleton Styles --- */
+
+.skeleton-row {
+    pointer-events: none;
+    border: none;
+    background: var(--white);
+    margin-bottom: 15px;
+}
+
+.skeleton-row .exam-info {
+    flex: 1;
+}
+
+/* Match the tab content padding */
+.exam-content {
+    min-height: 400px; /* Prevents footer jumping when switching tabs */
+}
+
+@media (max-width: 768px) {
+    .skeleton-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+}

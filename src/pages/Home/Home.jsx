@@ -1,228 +1,131 @@
 // src/pages/Home/Home.jsx
-
 import React from "react";
-import { useNavigate, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./Home.css";
 
-// Images you confirmed exist in src/assets/images
-
-import csagiet from "../../assets/images/csa-giet2.jpeg";
+// Assets
 import csadept from "../../assets/images/csadept.jpeg";
-import logo from "../../assets/images/logo.png";
-
-// small inline SVG placeholder for any missing images
-
-const PLACEHOLDER =
-  "data:image/svg+xml;charset=utf-8," +
-  encodeURIComponent(
-    `<svg xmlns='http://www.w3.org/2000/svg' width='800' height='500'><rect width='100%' height='100%' fill='#eef4ff'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='#3b5998' font-family='Arial' font-size='20'>Image not found</text></svg>`
-  );
-
-function safeSrc(src) {
-  return src || PLACEHOLDER;
-}
+import csagiet from "../../assets/images/csa-giet2.jpeg";
+import saLogo from "../../assets/images/logo.png"; // Student Association Logo
 
 export default function Home() {
   return (
-    <main>
-      {/* HERO */}
+    <main className="home-page">
+      {/* 🎬 VIDEO HERO SECTION */}
+      <section className="hero-section">
+        <div className="hero-video-wrapper">
+          <video autoPlay loop muted playsInline className="hero-video">
+            <source src="https://www.giet.edu/wp-content/uploads/2021/03/main-banner-optimized.mp4" type="video/mp4" />
+          </video>
+          <div className="hero-overlay"></div>
+        </div>
 
-      <section className="hero">
-        <div className="container hero-layout">
-          <div className="hero-image-wrapper">
-            <div className="image-overlay" />
-
-            <img
-              src={safeSrc(csadept)}
-              alt="CSA Department, GIET University"
-              className="hero-image"
-              onError={(e) => (e.currentTarget.src = PLACEHOLDER)}
-            />
-          </div>
-
-          <div className="hero-about">
-            <h2 className="section-heading">About the CSA Department</h2>
-
-            <div className="hero-badges">
-              <span className="badge">📚 BCA &amp; MCA Programs</span>
-
-              <span className="badge">💻 Modern Computer Labs</span>
-
-              <span className="badge">
-                🏆 Technical Events &amp; Hackathons
-              </span>
+        <div className="container hero-content">
+          <div className="hero-text-box">
+            {/* <span className="hero-tag">GIET University, Gunupur</span> */}
+            <h1 className="hero-main-title">
+              Department of <br /> 
+              <span>Computer Science & Application</span>
+            </h1>
+            <p className="hero-lead">
+              Innovating the future through world-class infrastructure and industry-aligned BCA & MCA programs.
+            </p>
+            <div className="hero-btn-group">
+              <NavLink to="/about" className="btn-primary">Explore Department</NavLink>
             </div>
-
-            <p className="about-text">
-              The Department of Computer Science and Application (CSA) at GIET
-              University focuses on building strong foundations in computing,
-              programming, and modern software development. It offers both
-              undergraduate (BCA) and postgraduate (MCA) programmes aligned with
-              current industry requirements.
-            </p>
-
-            <p className="about-text">
-              With well-equipped computer laboratories, experienced faculty
-              members, and a student-centric learning environment, the
-              department encourages project-based learning, coding practices,
-              and participation in technical events, hackathons, and workshops.
-            </p>
-
-            <ul className="about-list">
-              <li>Modern computer labs and infrastructure.</li>
-
-              <li>
-                Curriculum focused on core CS and application development.
-              </li>
-
-              <li>Seminars, guest lectures, and technical events.</li>
-
-              <li>Support for placements, internships, and higher studies.</li>
-            </ul>
-
-            <button
-              className="btn-learn-more"
-              onClick={() => (window.location.href = "/about")}
-            >
-              Know More →
-            </button>
           </div>
         </div>
       </section>
 
-      {/* COURSES */}
-
-      <section className="courses">
-        <div className="container">
-          <h2 className="section-heading">Courses Offered</h2>
-
-          <p className="section-subtitle">
-            The CSA Department offers the following programmes:
-          </p>
-
-          <div className="courses-grid">
-            <article className="course-card">
-              <h3 className="course-title">
-                Bachelor of Computer Application (BCA)
-              </h3>
-
-              <p className="course-tag">Undergraduate Programme · 3 Years</p>
-
-              <p className="course-text">
-                The BCA programme provides a strong base in computer
-                fundamentals, programming, databases, operating systems, and web
-                technologies to prepare students for careers in software and IT.
-              </p>
-
-              <ul className="course-details">
-                <li>Eligibility: 10+2 (as per GIET University norms)</li>
-
-                <li>
-                  Focus: Programming, web development, DBMS, operating systems.
-                </li>
-
-                <li>
-                  Career Paths: Software Developer, Web Developer, System
-                  Analyst, IT Support.
-                </li>
-              </ul>
-
-              <button className="btn-enquiry">Enquiry for BCA</button>
-            </article>
-
-            <article className="course-card">
-              <h3 className="course-title">
-                Master of Computer Application (MCA)
-              </h3>
-
-              <p className="course-tag">Postgraduate Programme · 2 Years</p>
-
-              <p className="course-text">
-                The MCA programme is designed for graduates aiming to specialize
-                in software development, application design, and advanced
-                computing concepts.
-              </p>
-
-              <ul className="course-details">
-                <li>
-                  Eligibility: Graduation with required background (GIET
-                  University norms).
-                </li>
-
-                <li>
-                  Focus: Advanced programming, software engineering, data
-                  analytics, projects.
-                </li>
-
-                <li>
-                  Career Paths: Software Engineer, Full-Stack Developer, Data
-                  Analyst, Consultant.
-                </li>
-              </ul>
-
-              <button className="btn-enquiry">Enquiry for MCA</button>
-            </article>
+      {/* 🏛️ WHY CHOOSE SECTION (Professional Layout) */}
+      <section className="about-overview section-padding">
+        <div className="container about-grid">
+          <div className="about-image-side">
+            <div className="image-stack">
+              <img src={csadept} alt="CSA Building" className="main-img" />
+              <div className="experience-badge">
+                <strong>25+</strong>
+                <span>Years of Excellence</span>
+              </div>
+            </div>
+          </div>
+          <div className="about-content-side">
+            <h2 className="section-heading">Why Choose CSA at GIETU?</h2>
+            <div className="features-list">
+              <div className="feature-item">
+                <div className="feature-icon"><i className="fas fa-microchip"></i></div>
+                <div className="feature-text">
+                  <h4>Advanced Computing Labs</h4>
+                  <p>Equipped with high-end GPUs and the latest software suites to facilitate Research in Deep Learning.</p>
+                </div>
+              </div>
+              <div className="feature-item">
+                <div className="feature-icon"><i className="fas fa-users-cog"></i></div>
+                <div className="feature-text">
+                  <h4>Expert Faculty</h4>
+                  <p>Mentors with deep research backgrounds and industry experience guiding the next generation of tech leaders.</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* GALLERY */}
-
-      <section className="gallery">
+      {/* 🎓 ACADEMIC PROGRAMMES SECTION */}
+      <section className="courses-overview section-padding bg-light">
         <div className="container">
-          <h2 className="section-heading">Gallery</h2>
-
-          <p className="section-subtitle">
-            Glimpses of CSA labs, events, and student activities.
-          </p>
-
-          <div className="gallery-grid">
-            <div className="gallery-item">
-              <img
-                src={safeSrc(csagiet)}
-                alt="CSA Lab"
-                onError={(e) => (e.currentTarget.src = PLACEHOLDER)}
-              />
-
-              <span className="gallery-caption">Computer Lab</span>
+          <div className="section-header-centered">
+            <h2 className="section-heading">Our Academic Programmes</h2>
+            <p className="section-subtitle">Industry-aligned courses for future tech leaders</p>
+          </div>
+          <div className="courses-grid-enhanced">
+            <div className="course-card-modern">
+              <div className="course-icon"><i className="fas fa-graduation-cap"></i></div>
+              <h3>BCA</h3>
+              <p className="course-duration">3 Years Undergraduate</p>
+              <p>Foundations of programming, web technologies, and database management.</p>
+              <NavLink to="/exam" className="course-link">Course Details →</NavLink>
             </div>
-
-            <div className="gallery-item">
-              <img
-                src={safeSrc(logo)}
-                alt="CSA Event"
-                onError={(e) => (e.currentTarget.src = PLACEHOLDER)}
-              />
-
-              <span className="gallery-caption">
-                Technical Events &amp; Workshops
-              </span>
+            <div className="course-card-modern">
+              <div className="course-icon"><i className="fas fa-laptop-code"></i></div>
+              <h3>MCA</h3>
+              <p className="course-duration">2 Years Postgraduate</p>
+              <p>Advanced software engineering, data analytics, and AI specialization.</p>
+              <NavLink to="/exam" className="course-link">Course Details →</NavLink>
             </div>
+          </div>
+        </div>
+      </section>
 
-            <div className="gallery-item">
-              <img
-                src={safeSrc(csadept)}
-                alt="CSA Seminar"
-                onError={(e) => (e.currentTarget.src = PLACEHOLDER)}
-              />
-
-              <span className="gallery-caption">
-                Guest Lectures &amp; Seminars
-              </span>
+      {/* 🖼️ CAMPUS HIGHLIGHTS (Masonry Gallery) */}
+      <section className="campus-highlights section-padding">
+        <div className="container">
+          <div className="section-header-centered">
+            <h2 className="section-heading">Campus Highlights</h2>
+            <p className="section-subtitle">Glimpses of life at the CSA Department</p>
+          </div>
+          
+          <div className="masonry-gallery">
+            <div className="gal-item tall">
+              <img src={csadept} alt="Main Building" />
+              <div className="gal-overlay"><span>Campus Infrastructure</span></div>
             </div>
-
-            <div className="gallery-item">
-              <img src={PLACEHOLDER} alt="Placeholder" />
-
-              <span className="gallery-caption">
-                Student Activities &amp; Projects
-              </span>
+            <div className="gal-item">
+              <img src={csagiet} alt="Lab View" />
+              <div className="gal-overlay"><span>Modern Labs</span></div>
+            </div>
+            <div className="gal-item logo-box">
+              <img src={saLogo} alt="CSA Association" className="sa-logo" />
+            </div>
+            <div className="gal-item wide">
+              <img src={csadept} alt="Academic Excellence" />
+              <div className="gal-overlay"><span>Academic Excellence</span></div>
             </div>
           </div>
 
-          <div className="gallery-btn-wrapper">
-            <NavLink to="/gallery" className="btn-view-more">
-              View More →
+          <div className="gallery-footer">
+            <NavLink to="/gallery" className="view-full-btn">
+              View Full Gallery <i className="fas fa-arrow-right"></i>
             </NavLink>
           </div>
         </div>
