@@ -3,10 +3,13 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
 import App from "./App.jsx";
-import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary.jsx"; 
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary.jsx";
 
 import "./styles/global.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+
+import { AuthProvider } from "./context/AuthContext.jsx";
+
 
 // 4. Dynamic Basename
 const basename = import.meta.env.BASE_URL || "/";
@@ -16,14 +19,16 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     {/* Error Boundary wraped the entire routed app */}
     <ErrorBoundary>
       <BrowserRouter
-        basename={basename} 
+        basename={basename}
         future={{
           v7_startTransition: true,
           v7_relativeSplatPath: true,
         }}
       >
-        <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </BrowserRouter>
     </ErrorBoundary>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

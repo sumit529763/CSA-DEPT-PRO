@@ -1,32 +1,163 @@
+// import React, { useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { useAuth } from "../../context/AuthContext.jsx";
+// import "./Login.css";
+
+// export default function Login() {
+//   const [email, setEmail] = useState("");
+//   const [password, setPassword] = useState("");
+//   const [error, setError] = useState("");
+
+//   const { login } = useAuth();
+//   const navigate = useNavigate();
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setError("");
+
+//     try {
+//       const user = await login(email, password);
+
+//       // Redirect everyone to the Dashboard
+//       // The Sidebar will automatically show Super Admin links if they have permission
+//       navigate("/admin/dashboard");
+//     } catch (err) {
+//       setError(err.message || "Login failed");
+//     }
+//   };
+
+//   return (
+//     <main className="login-page">
+//       <section className="login-card">
+//         <h2 className="login-title">Admin Login</h2>
+//         <p className="login-subtitle">
+//           Authorized users only. Please login to continue.
+//         </p>
+
+//         <form className="login-form" onSubmit={handleSubmit}>
+//           {error && <div className="login-error">{error}</div>}
+
+//           <div className="form-group">
+//             <label>Email Address</label>
+//             <input
+//               type="email"
+//               placeholder="admin@giet.edu"
+//               value={email}
+//               onChange={(e) => setEmail(e.target.value)}
+//               required
+//             />
+//           </div>
+
+//           <div className="form-group">
+//             <label>Password</label>
+//             <input
+//               type="password"
+//               placeholder="••••••••"
+//               value={password}
+//               onChange={(e) => setPassword(e.target.value)}
+//               required
+//             />
+//           </div>
+
+//           <button type="submit" className="login-btn">
+//             Login
+//           </button>
+
+//           <p className="login-note">
+//             Need access? Contact HOD or system administrator.
+//           </p>
+//         </form>
+//       </section>
+//     </main>
+//   );
+// }
+
+
+
+// src/pages/Login/Login.jsx
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext.jsx";
 import "./Login.css";
 
 export default function Login() {
   const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoggingIn, setIsLoggingIn] = useState(false); // State for the loading effect
 
-  function handleSubmit(e) {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: replace with real auth flow / backend
-    alert(`Login attempted for ${email}`);
+    setError("");
+    setIsLoggingIn(true); // Start loading immediately on submit
+
+    try {
+      const user = await login(email, password);
+
+      // We add a small artificial delay so the user can actually see 
+      // the professional loading effect before the redirect
+      setTimeout(() => {
+        navigate("/admin/dashboard");
+      }, 1500); 
+    } catch (err) {
+      setIsLoggingIn(false); // Stop loading if there is an error
+      setError(err.message || "Login failed. Please check your credentials.");
+    }
+  };
+
+  // If the system is authenticating, show the spinner instead of the form
+  if (isLoggingIn) {
+    return (
+      <div className="loading-overlay">
+        <div className="spinner"></div>
+        <p className="loading-text">AUTHENTICATING WITH CSA SERVER...</p>
+      </div>
+    );
   }
 
   return (
-    <main>
-      <section className="container" style={{ padding: "36px 0", maxWidth: 600 }}>
-        <h2 className="section-heading">Admin Login</h2>
-        <p className="section-subtitle">Authorized users only. Contact HOD if access is required.</p>
+    <main className="login-page">
+      <section className="login-card">
+        <h2 className="login-title">Admin Login</h2>
+        <p className="login-subtitle">
+          Authorized users only. Please login to continue.
+        </p>
 
-        <form onSubmit={handleSubmit} style={{ marginTop: 16, display: "grid", gap: 12 }}>
-          <label>
-            <div style={{ fontSize: 0.9 }}>Email</div>
-            <input type="email" value={email} onChange={e=>setEmail(e.target.value)} required style={{ width: "100%", padding: "10px", borderRadius: 8, border: "1px solid var(--border-soft)" }} />
-          </label>
-          <label>
-            <div style={{ fontSize: 0.9 }}>Password</div>
-            <input type="password" value={pass} onChange={e=>setPass(e.target.value)} required style={{ width: "100%", padding: "10px", borderRadius: 8, border: "1px solid var(--border-soft)" }} />
-          </label>
-          <button className="btn-enquiry" type="submit">Login</button>
+        <form className="login-form" onSubmit={handleSubmit}>
+          {error && <div className="login-error">{error}</div>}
+
+          <div className="form-group">
+            <label>Email Address</label>
+            <input
+              type="email"
+              placeholder="admin@giet.edu"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <button type="submit" className="login-btn">
+            Login
+          </button>
+
+          <p className="login-note">
+            Need access? Contact HOD or system administrator.
+          </p>
         </form>
       </section>
     </main>

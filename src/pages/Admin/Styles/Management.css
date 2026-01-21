@@ -1,0 +1,233 @@
+/* src/pages/Admin/Styles/Management.css */
+
+.management-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.management-header h2 {
+  color: #004aad; /* Match GIETU Blue */
+  font-weight: 700;
+}
+
+.btn-add {
+  background: #004aad;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-add:hover { background: #003a8c; transform: translateY(-2px); }
+
+/* --- RESPONSIVE TABLE --- */
+.table-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  border: 1px solid #edf2f7;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th {
+  background: #f8fafc;
+  padding: 15px;
+  text-align: left;
+  font-size: 0.85rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.admin-table td {
+  padding: 15px;
+  border-top: 1px solid #edf2f7;
+  color: #334155;
+}
+
+.badge {
+  background: #ebf4ff;
+  color: #004aad;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* --- MOBILE STACKING LOGIC --- */
+@media (max-width: 768px) {
+  .admin-table thead { display: none; } /* Hide headers on mobile */
+
+  .admin-table tr {
+    display: block;
+    border-bottom: 2px solid #edf2f7;
+    padding: 10px 0;
+  }
+
+  .admin-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border: none;
+    text-align: right;
+  }
+
+  /* Show label before the value on mobile */
+  .admin-table td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+  }
+}
+
+
+
+/* Add these to your existing src/pages/Admin/Styles/Management.css */
+
+.action-btns {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+.btn-edit, .btn-delete {
+  width: 35px;
+  height: 35px;
+  border-radius: 6px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-edit {
+  background-color: #ebf4ff;
+  color: #004aad; /* GIETU Blue */
+}
+
+.btn-edit:hover {
+  background-color: #004aad;
+  color: white;
+}
+
+.btn-delete {
+  background-color: #fff5f5;
+  color: #e53e3e;
+}
+
+.btn-delete:hover {
+  background-color: #e53e3e;
+  color: white;
+}
+
+/* Ensure font-bold class works for table titles */
+.font-bold {
+  font-weight: 600;
+  color: #1a202c;
+}
+
+/* Stacking logic for mobile actions */
+@media (max-width: 768px) {
+  .action-btns {
+    justify-content: flex-end;
+    width: 100%;
+  }
+}
+
+
+
+/* --- GALLERY SPECIFIC MANAGEMENT STYLES --- */
+
+.gallery-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.gallery-admin-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #edf2f7;
+  transition: transform 0.3s ease;
+}
+
+.gallery-admin-card:hover {
+  transform: translateY(-5px);
+}
+
+.gallery-img-wrapper {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.gallery-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Delete button appears on top of the image */
+.img-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-admin-card:hover .img-actions {
+  opacity: 1;
+}
+
+.btn-delete-overlay {
+  background: rgba(229, 62, 62, 0.9);
+  color: white;
+  border: none;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.gallery-info {
+  padding: 12px;
+  text-align: center;
+}
+
+.gallery-info p {
+  font-size: 0.9rem;
+  color: #4a5568;
+  font-weight: 500;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+  .gallery-admin-grid {
+    grid-template-columns: 1fr; /* Single column on phones */
+  }
+  
+  .img-actions {
+    opacity: 1; /* Always show delete button on mobile */
+  }
+}

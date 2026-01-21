@@ -1,0 +1,105 @@
+/* src/pages/NotFound/NotFound.css */
+
+.error-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f1f5f9; /* Same as Admin background */
+  padding: 20px;
+}
+
+.error-window {
+  width: 100%;
+  max-width: 650px;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+.window-header {
+  background: #1e293b;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.window-dots { display: flex; gap: 8px; }
+.dot { width: 12px; height: 12px; border-radius: 50%; }
+.dot.red { background: #ff5f56; }
+.dot.yellow { background: #ffbd2e; }
+.dot.green { background: #27c93f; }
+
+.window-title {
+  color: #94a3b8;
+  font-family: monospace;
+  font-size: 0.85rem;
+}
+
+.window-body {
+  padding: 50px 40px;
+  text-align: center;
+}
+
+.error-code {
+  font-size: 6rem;
+  font-weight: 800;
+  color: #004aad; /* Brand Blue */
+  margin: 0;
+  line-height: 1;
+}
+
+.error-slug {
+  font-family: monospace;
+  color: #64748b;
+  letter-spacing: 2px;
+  margin-bottom: 25px;
+}
+
+.code-snippet {
+  background: #1e293b;
+  color: #adbac7;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: left;
+  margin: 30px 0;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.error-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-reconnect {
+  background: #004aad;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-explore {
+  background: white;
+  color: #004aad;
+  border: 2px solid #004aad;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (max-width: 500px) {
+  .error-code { font-size: 4rem; }
+  .window-body { padding: 30px 20px; }
+  .btn-reconnect, .btn-explore { width: 100%; justify-content: center; }
+}
