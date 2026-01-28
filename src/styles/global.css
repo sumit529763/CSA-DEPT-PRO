@@ -61,7 +61,7 @@ a { text-decoration: none; color: inherit; }
   border-radius: 8px;
   background-color: var(--white);
   border: 1px solid var(--border-soft);
-  background-image: url(../assets/images/logo.png);
+  background-image: url(../../public/favicon.ico);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 90%;

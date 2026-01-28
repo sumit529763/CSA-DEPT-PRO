@@ -62,16 +62,15 @@ export default function App() {
           </ProtectedRoute>
         }
       >
-
         <Route index element={<Navigate to="dashboard" replace />} />
         {/* Default Admin Route */}
         <Route path="dashboard" element={<AdminDashboard />} />
-        
+
         {/* Content Management */}
         <Route path="manage/news" element={<ManageNews />} />
         <Route path="manage/events" element={<ManageEvents />} />
         <Route path="manage/gallery" element={<ManageGallery />} />
-        
+
         {/* Super Admin Section */}
         {/* This line fixes the 404: If someone goes to /admin/super, it sends them to /admin/super/users */}
         <Route path="super" element={<Navigate to="users" replace />} />
