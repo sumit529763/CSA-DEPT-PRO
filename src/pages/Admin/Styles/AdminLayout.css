@@ -1,0 +1,68 @@
+/* src/pages/Admin/Styles/AdminLayout.css */
+
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f7fa; /* Light grey like your main site background */
+}
+
+.admin-main-wrapper {
+  flex: 1;
+  margin-left: 260px; /* Leaves room for fixed sidebar */
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.admin-content-area {
+  padding: 30px;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* --- MOBILE HEADER (Hidden on Desktop) --- */
+.admin-mobile-nav {
+  display: none;
+  background: white;
+  padding: 15px 20px;
+  border-bottom: 1px solid #e1e8ef;
+  align-items: center;
+  gap: 15px;
+  position: sticky;
+  top: 0;
+  z-index: 900;
+}
+
+.menu-toggle {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #004aad; /* Match your GIETU Blue */
+  cursor: pointer;
+}
+
+.mobile-logo {
+  font-weight: 700;
+  color: #004aad;
+  letter-spacing: 1px;
+}
+
+/* --- RESPONSIVENESS --- */
+@media (max-width: 992px) {
+  .admin-main-wrapper {
+    margin-left: 0; /* Content takes full width */
+  }
+
+  .admin-mobile-nav {
+    display: flex; /* Show the hamburger bar */
+  }
+
+  .admin-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 950;
+    backdrop-filter: blur(2px);
+  }
+}

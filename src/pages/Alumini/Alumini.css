@@ -1,3 +1,121 @@
-.about { padding:2rem 0; }
-.about-inner { background:white; padding:1rem; border-radius:8px; box-shadow:var(--shadow-soft); }
-.about-inner ul { margin:0.5rem 0 0 1.2rem; }
+/* src/pages/Alumni/Alumni.css */
+
+.alumni-banner {
+    background: linear-gradient(rgba(0, 51, 102, 0.9), rgba(0, 51, 102, 0.9)), 
+                url('https://images.unsplash.com/photo-1523050335392-9bc567597b81?q=80&w=1500');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 60px 40px;
+    border-radius: 20px;
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.banner-content h3 {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+}
+
+.banner-content p {
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto 25px;
+    opacity: 0.9;
+}
+
+.btn-join {
+    background: var(--color-accent, #007bff);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.btn-join:hover {
+    transform: translateY(-3px);
+    background: #0056b3;
+}
+
+.alumni-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.alumni-card {
+    border: 1px solid #edf2f7;
+    transition: all 0.3s ease !important;
+}
+
+.alumni-card:hover {
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+}
+
+.alumni-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.alumni-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #f0f4f8;
+}
+
+.alumni-meta h4 {
+    color: var(--color-primary-dark);
+    font-size: 1.2rem;
+}
+
+.alumni-batch {
+    font-size: 0.85rem;
+    color: #718096;
+    font-weight: 600;
+}
+
+.alumni-pos {
+    color: #2d3748;
+    margin-bottom: 2px;
+}
+
+.alumni-company {
+    font-size: 0.9rem;
+    color: var(--color-accent);
+    margin-bottom: 15px;
+}
+
+.alumni-quote {
+    font-style: italic;
+    color: #4a5568;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    border-left: 3px solid #e2e8f0;
+    padding-left: 15px;
+}
+
+.alumni-footer {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #f7fafc;
+}
+
+.linkedin-link {
+    color: #0077b5;
+    text-decoration: none;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+@media (max-width: 640px) {
+    .banner-content h3 { font-size: 1.6rem; }
+}

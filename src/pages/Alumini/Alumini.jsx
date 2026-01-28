@@ -1,41 +1,80 @@
-import React from "react";
-import "./Alumini.css"; // optional; can skip if using global styles
+// src/pages/Alumni/Alumni.jsx
+import React from 'react';
+import SectionTitle from '../../components/UI/SectionTitle';
+import Card from '../../components/UI/Card';
+import './Alumini.css';
 
-export default function Alumini() {
+import img from '../../assets/images/img.jpg'
+
+const alumniMembers = [
+  {
+    id: 1,
+    name: "Rakesh Roshan",
+    batch: "2018-2021",
+    position: "Senior Software Engineer",
+    company: "Google, Mountain View",
+    image: img,
+    quote: "The foundation I built at CSA Department was instrumental in my journey to Silicon Valley."
+  },
+  {
+    id: 2,
+    name: "Priyanka Sethi",
+    batch: "2019-2022",
+    position: "Data Scientist",
+    company: "Amazon, Berlin",
+    image: img,
+    quote: "From lab sessions to hackathons, the department provided the perfect environment for growth."
+  },
+  {
+    id: 3,
+    name: "Vikram Aditya",
+    batch: "2015-2018",
+    position: "Full Stack Developer",
+    company: "TCS, Mumbai",
+    image: img,
+    quote: "Proud to be an alumnus of GIET. The faculty support here is unparalleled."
+  }
+];
+
+export default function Alumni() {
   return (
-    <main>
-      <section className="container" style={{ padding: "36px 0" }}>
-        <h2 className="section-heading">Alumni</h2>
-        <p className="section-subtitle">Our proud alumni network and their achievements.</p>
+    <div className="alumni-page container section-padding">
+      <SectionTitle 
+        title="Our Alumni Network" 
+        subtitle="Celebrating the global success of our graduates across the tech industry" 
+      />
 
-        <div style={{ marginTop: 18 }}>
-          <p className="about-text">
-            The Alumni of CSA are working across industries — software development, data analytics,
-            research and entrepreneurship. This page lists notable alumni, placement stories, and ways
-            to connect with the department.
-          </p>
-
-          <article className="course-card" style={{ marginTop: 16 }}>
-            <h3 className="course-title">Alumni Spotlight: Mr. X</h3>
-            <p className="course-text">
-              Short story about achievements and current role.
-            </p>
-            <ul className="course-details">
-              <li>Batch: 20XX</li>
-              <li>Company: Example Corp</li>
-              <li>Role: Senior Developer</li>
-            </ul>
-          </article>
-
-          <div style={{ marginTop: 18 }}>
-            <h3 className="section-heading">Get Involved</h3>
-            <p className="about-text">
-              Alumni can contribute as mentors, guest lecturers and industry partners. Contact the
-              department for details.
-            </p>
-          </div>
+      {/* 🌍 Connection CTA */}
+      <div className="alumni-banner">
+        <div className="banner-content">
+          <h3>Are you a CSA Graduate?</h3>
+          <p>Join our growing network of 2000+ alumni worldwide and stay connected with your alma mater.</p>
+          <button className="btn-join">Register as Alumni <i className="fas fa-external-link-alt"></i></button>
         </div>
-      </section>
-    </main>
+      </div>
+
+      {/* ⭐ Featured Alumni */}
+      <div className="alumni-grid">
+        {alumniMembers.map((alumnus) => (
+          <Card key={alumnus.id} className="alumni-card">
+            <div className="alumni-header">
+              <img src={alumnus.image} alt={alumnus.name} className="alumni-img" />
+              <div className="alumni-meta">
+                <h4>{alumnus.name}</h4>
+                <p className="alumni-batch">Class of {alumnus.batch}</p>
+              </div>
+            </div>
+            <div className="alumni-body">
+              <p className="alumni-pos"><strong>{alumnus.position}</strong></p>
+              <p className="alumni-company">at {alumnus.company}</p>
+              <p className="alumni-quote">"{alumnus.quote}"</p>
+            </div>
+            <div className="alumni-footer">
+               <a href="#" className="linkedin-link"><i className="fab fa-linkedin"></i> Connect</a>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </div>
   );
 }

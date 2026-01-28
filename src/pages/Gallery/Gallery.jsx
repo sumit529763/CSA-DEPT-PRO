@@ -1,38 +1,78 @@
-import React from "react";
-import "./Gallery.css";
-import csagiet from "../../assets/images/csa-giet2.jpeg";
-import csadept from "../../assets/images/csadept.jpeg";
-import logo from "../../assets/images/logo.png";
+// src/pages/Gallery/Gallery.jsx
+import React, { useState, useEffect } from 'react';
+import SectionTitle from '../../components/UI/SectionTitle';
+import './Gallery.css';
 
-const PLACEHOLDER = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(
-  `<svg xmlns='http://www.w3.org/2000/svg' width='600' height='360'><rect width='100%' height='100%' fill='#eef4ff'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='#3b5998' font-size='20'>Image not found</text></svg>`
-);
-
-function safeSrc(s) { return s || PLACEHOLDER; }
+const galleryImages = [
+  { id: 1, category: 'Infrastructure', title: 'Advanced AI Lab', url: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1000' },
+  { id: 2, category: 'Events', title: 'Tech Fest 2025', url: 'https://images.unsplash.com/photo-1540575861501-7ad060e39fe5?q=80&w=1000' },
+  { id: 3, category: 'Academic', title: 'Coding Workshop', url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=1000' },
+  { id: 4, category: 'Infrastructure', title: 'Department Library', url: 'https://images.unsplash.com/photo-1507733632300-47866b0f2c41?q=80&w=1000' },
+  { id: 5, category: 'Events', title: 'Annual Seminar', url: 'https://images.unsplash.com/photo-1475721027187-402ad2989a3b?q=80&w=1000' },
+  { id: 6, category: 'Academic', title: 'Project Exhibition', url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1000' },
+];
 
 export default function Gallery() {
-  const items = [
-    { src: csagiet, cap: "Campus View" },
-    { src: csadept, cap: "Department Building" },
-    { src: logo, cap: "Event Poster" },
-    { src: null, cap: "Student Activity" },
-  ];
+  const [filter, setFilter] = useState('All');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulating delay for image metadata fetching
+    const timer = setTimeout(() => setLoading(false), 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const filteredImages = filter === 'All' 
+    ? galleryImages 
+    : galleryImages.filter(img => img.category === filter);
+
+  const categories = ['All', 'Infrastructure', 'Events', 'Academic'];
 
   return (
-    <main>
-      <section className="container" style={{ padding: "36px 0" }}>
-        <h2 className="section-heading">Gallery</h2>
-        <p className="section-subtitle">Glimpses of CSA labs, events, and student activities.</p>
+    <div className="gallery-page container section-padding">
+      <SectionTitle 
+        title="Campus Gallery" 
+        subtitle="Exploring the vibrant life and world-class facilities of the CSA Department" 
+      />
 
-        <div className="gallery-grid" style={{ marginTop: 16 }}>
-          {items.map((it, i) => (
-            <div key={i} className="gallery-item">
-              <img src={safeSrc(it.src)} alt={it.cap} onError={(e) => (e.currentTarget.src = PLACEHOLDER)} />
-              <span className="gallery-caption">{it.cap}</span>
+      <div className="gallery-filter-bar">
+        {categories.map(cat => (
+          <button 
+            key={cat} 
+            className={`filter-btn ${filter === cat ? 'active' : ''}`}
+            onClick={() => setFilter(cat)}
+            disabled={loading}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      <div className="gallery-grid">
+        {loading ? (
+          // --- SKELETON LOADING STATE ---
+          [1, 2, 3, 4, 5, 6].map(n => (
+            <div key={n} className="gallery-item skeleton-item">
+              <div className="skeleton sk-gallery-img"></div>
             </div>
-          ))}
-        </div>
-      </section>
-    </main>
+          ))
+        ) : (
+          filteredImages.map((image) => (
+            <div key={image.id} className="gallery-item">
+              <div className="gallery-img-container">
+                <img src={image.url} alt={image.title} loading="lazy" />
+                <div className="gallery-overlay">
+                  <span className="gallery-cat-label">{image.category}</span>
+                  <h4 className="gallery-img-title">{image.title}</h4>
+                  <button className="gallery-zoom-icon">
+                    <i className="fas fa-search-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
   );
 }

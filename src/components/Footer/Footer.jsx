@@ -34,10 +34,13 @@ export default function Footer() {
             </li>
             {/* If academic-calendar is a separate page */}
             <li>
-              <NavLink to="/academic-calendar">Academic Calendar</NavLink>
+              <NavLink to="/calendar">Academic Calendar</NavLink>
             </li>
             <li>
               <NavLink to="/placements">Placement Cell</NavLink>
+            </li>
+            <li>
+              <NavLink to="/contact">Contact Us</NavLink>
             </li>
           </ul>
         </div>

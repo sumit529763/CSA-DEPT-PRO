@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "bca-dept-pro"
-  }
+    "default": "csa-dept-pro",
+    "production": "csa-dept-pro"
+  },
+  "targets": {},
+  "etags": {}
 }
