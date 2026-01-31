@@ -1,49 +1,22 @@
 // src/services/authService.js
+import axios from 'axios';
 
-/**
- * Fake backend auth service
- * Replace logic later with real API calls
- */
-
-const FAKE_USERS = [
-  {
-    id: 1,
-    email: "naiks0234@gmail.com",
-    password: "1234",
-    role: "admin",
-    name: "Department Admin",
-  },
-  {
-    id: 2,
-    email: "naiks0234@giet.edu",
-    password: "4321",
-    role: "superadmin",
-    name: "Super Admin",
-  },
-];
+// Ensure your .env has VITE_API_URL=http://localhost:5000/api
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 export const authService = {
   login: async (email, password) => {
-    await new Promise((res) => setTimeout(res, 500));
-
-    const user = FAKE_USERS.find(
-      (u) => u.email === email && u.password === password
-    );
-
-    if (!user) {
-      throw new Error("Invalid email or password");
+    try {
+      const response = await axios.post(`${API_URL}/auth/login`, { email, password });
+      // Returns { token, user: { id, name, role, email } } from the server
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.message || "Login failed");
     }
-
-    return {
-      token: "fake-jwt-token-" + user.role,
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
-    };
   },
 
-  logout: async () => true,
+  logout: () => {
+    localStorage.removeItem("auth_user");
+    localStorage.removeItem("auth_token");
+  }
 };
