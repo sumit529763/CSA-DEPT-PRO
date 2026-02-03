@@ -27,6 +27,9 @@ import NotFound from "./pages/NotFound/NotFound.jsx";
 /* Admin Pages */
 import AdminDashboard from "./pages/Admin/Dashboard/AdminDashboard.jsx";
 import ManageNews from "./pages/Admin/Management/ManageNews.jsx";
+import AddNews from "./pages/Admin/Management/AddNews.jsx";
+import EditNews from "./pages/Admin/Management/EditNews.jsx";
+
 import ManageEvents from "./pages/Admin/Management/ManageEvents.jsx";
 import ManageGallery from "./pages/Admin/Management/ManageGallery.jsx";
 
@@ -68,8 +71,12 @@ export default function App() {
 
         {/* Content Management */}
         <Route path="manage/news" element={<ManageNews />} />
+        <Route path="manage/news/add" element={<AddNews />} />
+        <Route path="manage/news/edit/:id" element={<EditNews />} />
+
         <Route path="manage/events" element={<ManageEvents />} />
         <Route path="manage/gallery" element={<ManageGallery />} />
+
 
         {/* Super Admin Section */}
         {/* This line fixes the 404: If someone goes to /admin/super, it sends them to /admin/super/users */}
