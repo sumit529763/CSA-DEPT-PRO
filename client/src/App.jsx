@@ -36,6 +36,9 @@ import ManageGallery from "./pages/Admin/Management/ManageGallery.jsx";
 /* Super Admin Pages */
 import ManageUsers from "./pages/Admin/SuperAdmin/ManageUsers.jsx";
 import AuditLogs from "./pages/Admin/SuperAdmin/AuditLogs.jsx";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 export default function App() {
   return (

@@ -19,6 +19,8 @@ exports.createNews = async (req, res) => {
     if (req.file) {
       const result = await cloudinary.uploader.upload(req.file.path, {
         folder: "news",
+        quality: "auto",
+        fetch_format: "auto",
       });
 
       imageUrl = result.secure_url;

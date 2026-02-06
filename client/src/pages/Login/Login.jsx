@@ -31,10 +31,11 @@ export default function Login() {
         }
       }, 1500);
 
-    } catch (err) {
-      setIsLoggingIn(false); // Stop loading if there is an error
-      setError(err.message || "Login failed. Please check your credentials.");
+    } catch (error) {
+      console.error("LOGIN ERROR:", error.response?.data || error.message);
+      alert(error.response?.data?.message || "Login failed");
     }
+
   };
 
   // If the system is authenticating, show the spinner instead of the form

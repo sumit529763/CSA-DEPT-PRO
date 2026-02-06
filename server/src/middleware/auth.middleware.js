@@ -16,7 +16,7 @@ exports.protect = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("DECODED TOKEN 👉", decoded);
+    // console.log("DECODED TOKEN 👉", decoded);
     req.user = decoded; // 🔥 REQUIRED
     next();
 
@@ -27,14 +27,13 @@ exports.protect = (req, res, next) => {
 
 exports.adminOnly = (req, res, next) => {
   const role = req.user?.role?.toUpperCase();
-
-  if (role === "ADMIN" || role === "SUPER_ADMIN") {
+  if (role === "ADMIN" || role === "SUPERADMIN") {
     return next();
   }
-
   return res.status(403).json({
     message: "Admin access denied",
     yourRole: req.user.role,
   });
 };
+
 

@@ -8,6 +8,7 @@ export default function ManageNews() {
   const [loading, setLoading] = useState(true);
 
   // 🔥 modal state
+  const [loadingPublish, setLoadingPublish] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -36,12 +37,19 @@ export default function ManageNews() {
   const handleAddNews = async (e) => {
     e.preventDefault();
 
+    if (!title || !description) {
+      alert("Title and description are required");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
     if (image) formData.append("image", image);
 
     try {
+      setLoadingPublish(true); // 🔥 START LOADING
+
       await axios.post(API_URL, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -49,22 +57,22 @@ export default function ManageNews() {
         },
       });
 
-      // reset + close modal
+      // reset form
       setTitle("");
       setDescription("");
       setImage(null);
-      setShowModal(false);
 
-      fetchNews(); // 🔥 auto refresh
+      setShowModal(false); // 🔥 CLOSE MODAL IMMEDIATELY
+      fetchNews();         // 🔥 REFRESH TABLE
     } catch (error) {
-      console.error("Publish error:", error.response?.data || error.message);
       alert(
-        error.response?.data?.message ||
-        "Publish failed – check backend logs"
+        error.response?.data?.message || "Failed to publish news"
       );
+    } finally {
+      setLoadingPublish(false); // 🔥 STOP LOADING
     }
-
   };
+
 
   // 🔹 Delete news
   const handleDelete = async (id) => {
@@ -195,12 +203,23 @@ export default function ManageNews() {
               <input
                 type="file"
                 accept="image/*"
-                onChange={(e) => setImage(e.target.files[0])}
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  if (!file) return;
+                  if (file.size > 2 * 1024 * 1024) {
+                    alert("Image must be less than 2MB");
+                    return;
+                  }
+                  setImage(file);
+                }}
               />
 
               <div className="modal-actions">
-                <button type="submit" className="btn-add">
-                  Publish
+                <button
+                  type="submit"
+                  className="btn-add"
+                  disabled={loadingPublish}                >
+                  {loadingPublish ? "Publishing..." : "Publish"}
                 </button>
 
                 <button
