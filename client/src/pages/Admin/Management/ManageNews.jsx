@@ -1,26 +1,24 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import NewsForm from "./NewsForm"; 
 import "../Styles/Management.css";
 
 export default function ManageNews() {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // 🔥 modal state
-  const [loadingPublish, setLoadingPublish] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [loadingAction, setLoadingAction] = useState(false);
+
+  const [formData, setFormData] = useState({ title: "", description: "", id: null });
   const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState("");
 
-  const navigate = useNavigate();
   const location = useLocation();
-
   const API_URL = "http://localhost:5000/api/news";
   const token = localStorage.getItem("token");
 
-  // 🔹 Fetch all news
   const fetchNews = async () => {
     try {
       setLoading(true);
@@ -33,207 +31,164 @@ export default function ManageNews() {
     }
   };
 
-  // 🔹 Create news (popup submit)
-  const handleAddNews = async (e) => {
-    e.preventDefault();
+  const handleOpenAdd = () => {
+    setIsEditMode(false);
+    setFormData({ title: "", description: "", id: null });
+    setPreview("");
+    setImage(null);
+    setShowModal(true);
+  };
 
-    if (!title || !description) {
-      alert("Title and description are required");
-      return;
+  const handleOpenEdit = (item) => {
+    setIsEditMode(true);
+    setFormData({ title: item.title, description: item.description, id: item._id });
+    setPreview(item.image);
+    setImage(null);
+    setShowModal(true);
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        alert("File too large! Max 2MB allowed.");
+        return;
+      }
+      setImage(file);
+      setPreview(URL.createObjectURL(file));
     }
+  };
 
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("description", description);
-    if (image) formData.append("image", image);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoadingAction(true);
+    const data = new FormData();
+    data.append("title", formData.title);
+    data.append("description", formData.description);
+    if (image) data.append("image", image);
 
     try {
-      setLoadingPublish(true); // 🔥 START LOADING
-
-      await axios.post(API_URL, formData, {
+      const config = {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
-      });
+      };
 
-      // reset form
-      setTitle("");
-      setDescription("");
-      setImage(null);
-
-      setShowModal(false); // 🔥 CLOSE MODAL IMMEDIATELY
-      fetchNews();         // 🔥 REFRESH TABLE
+      if (isEditMode) {
+        await axios.put(`${API_URL}/${formData.id}`, data, config);
+      } else {
+        await axios.post(API_URL, data, config);
+      }
+      setShowModal(false);
+      fetchNews();
     } catch (error) {
-      alert(
-        error.response?.data?.message || "Failed to publish news"
-      );
+      alert("Error: " + (error.response?.data?.message || "Operation failed"));
     } finally {
-      setLoadingPublish(false); // 🔥 STOP LOADING
+      setLoadingAction(false);
     }
   };
 
-
-  // 🔹 Delete news
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this news?")) return;
-
+    if (!window.confirm("Are you sure?")) return;
     try {
       await axios.delete(`${API_URL}/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       fetchNews();
     } catch (error) {
-      alert("Failed to delete news");
+      alert("Delete failed");
     }
   };
 
-  // 🔹 Auto refresh on navigation
   useEffect(() => {
     fetchNews();
   }, [location.key]);
 
   return (
     <div className="management-view">
-      {/* ===== HEADER ===== */}
       <div className="management-header">
         <div className="header-text">
           <h2>Manage News</h2>
           <p>Create, update, or remove department news articles.</p>
         </div>
-
-        {/* ✅ FIXED BUTTON */}
-        <button className="btn-add" onClick={() => setShowModal(true)}>
+        <button className="btn-add" onClick={handleOpenAdd}>
           <i className="fas fa-plus"></i> Add New News
         </button>
       </div>
 
-      {/* ===== TABLE ===== */}
-      <div className="table-container">
+      <div className="content-container">
         {loading ? (
-          <p>Loading news...</p>
-        ) : news.length > 0 ? (
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Title</th>
-                <th>Status</th>
-                <th>Date</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
+          <div className="loading-state">
+            <i className="fas fa-spinner fa-spin"></i> Loading...
+          </div>
+        ) : (
+          <>
+            {/* DESKTOP TABLE */}
+            <div className="table-wrapper desktop-only">
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>Image</th>
+                    <th>Title</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {news.map((item) => (
+                    <tr key={item._id}>
+                      <td><img src={item.image} alt="" className="table-thumb" /></td>
+                      <td className="font-bold">{item.title}</td>
+                      <td>
+                        <div className="action-btns">
+                          <button className="btn-edit" onClick={() => handleOpenEdit(item)}>
+                            <i className="fas fa-edit"></i>
+                          </button>
+                          <button className="btn-delete" onClick={() => handleDelete(item._id)}>
+                            <i className="fas fa-trash"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
-            <tbody>
+            {/* MOBILE CARDS */}
+            <div className="mobile-only card-list">
               {news.map((item) => (
-                <tr key={item._id}>
-                  <td>
-                    {item.image ? (
-                      <img src={item.image} alt="news" width="70" />
-                    ) : (
-                      "No Image"
-                    )}
-                  </td>
-
-                  <td className="font-bold">{item.title}</td>
-
-                  <td>
-                    <span className="badge">
-                      {item.isPublished ? "Published" : "Draft"}
-                    </span>
-                  </td>
-
-                  <td>
-                    {new Date(item.createdAt).toLocaleDateString()}
-                  </td>
-
-                  <td>
-                    <div className="action-btns">
-                      {/* ✅ EDIT */}
-                      <button
-                        className="btn-edit"
-                        onClick={() =>
-                          navigate(`/admin/manage/news/edit/${item._id}`)
-                        }
-                      >
-                        <i className="fas fa-edit"></i>
+                <div className="news-mobile-card" key={item._id}>
+                  <img src={item.image} alt="" className="card-img" />
+                  <div className="card-content">
+                    <h4 className="card-title">{item.title}</h4>
+                    <div className="card-actions">
+                      <button className="btn-edit-mobile" onClick={() => handleOpenEdit(item)}>
+                        <i className="fas fa-edit"></i> Edit
                       </button>
-
-                      {/* ✅ DELETE */}
-                      <button
-                        className="btn-delete"
-                        onClick={() => handleDelete(item._id)}
-                      >
-                        <i className="fas fa-trash"></i>
+                      <button className="btn-delete-mobile" onClick={() => handleDelete(item._id)}>
+                        <i className="fas fa-trash"></i> Delete
                       </button>
                     </div>
-                  </td>
-                </tr>
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
-        ) : (
-          <p>No news found.</p>
+            </div>
+          </>
         )}
       </div>
 
-      {/* ===== ADD NEWS MODAL ===== */}
-      {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-card">
-            <h3>Add New News</h3>
-
-            <form onSubmit={handleAddNews}>
-              <input
-                placeholder="Title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                required
-              />
-
-              <textarea
-                placeholder="Description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                required
-              />
-
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files[0];
-                  if (!file) return;
-                  if (file.size > 2 * 1024 * 1024) {
-                    alert("Image must be less than 2MB");
-                    return;
-                  }
-                  setImage(file);
-                }}
-              />
-
-              <div className="modal-actions">
-                <button
-                  type="submit"
-                  className="btn-add"
-                  disabled={loadingPublish}                >
-                  {loadingPublish ? "Publishing..." : "Publish"}
-                </button>
-
-                <button
-                  type="button"
-                  className="btn-cancel"
-                  onClick={() => setShowModal(false)}
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      <NewsForm 
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        onSubmit={handleSubmit}
+        isEdit={isEditMode}
+        loading={loadingAction}
+        formData={formData}
+        setFormData={setFormData}
+        preview={preview}
+        onImageChange={handleImageChange}
+      />
     </div>
   );
 }

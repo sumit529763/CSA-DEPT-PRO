@@ -7,7 +7,7 @@ const createAdmin = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
 
-    const email = "superadmin@giet.edu";
+    const email = "sumit@giet.edu";
 
     const exists = await User.findOne({ email });
     if (exists) {
@@ -15,7 +15,7 @@ const createAdmin = async () => {
       process.exit();
     }
 
-    const hashedPassword = await bcrypt.hash("admin123", 10);
+    const hashedPassword = await bcrypt.hash("1234", 10);
 
     await User.create({
       name: "Department Admin",

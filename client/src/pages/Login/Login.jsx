@@ -1,5 +1,4 @@
-// src/pages/Login/Login.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
 import "./Login.css";
@@ -8,23 +7,33 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [isLoggingIn, setIsLoggingIn] = useState(false); // State for the loading effect
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
-  const { login } = useAuth();
+  const { login, user, loading } = useAuth();
   const navigate = useNavigate();
+
+  // 🔥 PERSISTENCE FIX: If already logged in, redirect automatically
+  useEffect(() => {
+    if (!loading && user) {
+      if (user.role === "superadmin") {
+        navigate("/admin/super/users", { replace: true });
+      } else {
+        navigate("/admin/dashboard", { replace: true });
+      }
+    }
+  }, [user, loading, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setIsLoggingIn(true); // Start loading immediately on submit
+    setIsLoggingIn(true);
 
     try {
-      const user = await login(email, password);
-
-      // We add a small artificial delay so the user can actually see 
-      // the professional loading effect before the redirect
+      const response = await login(email, password);
+      
+      // Delay for professional effect
       setTimeout(() => {
-        if (user.user.role === "superadmin") {
+        if (response.user.role === "superadmin") {
           navigate("/admin/super/users", { replace: true });
         } else {
           navigate("/admin/dashboard", { replace: true });
@@ -33,13 +42,12 @@ export default function Login() {
 
     } catch (error) {
       console.error("LOGIN ERROR:", error.response?.data || error.message);
-      alert(error.response?.data?.message || "Login failed");
+      setIsLoggingIn(false);
+      setError(error.response?.data?.message || "Login failed. Check credentials.");
     }
-
   };
 
-  // If the system is authenticating, show the spinner instead of the form
-  if (isLoggingIn) {
+  if (isLoggingIn || loading) {
     return (
       <div className="loading-overlay">
         <div className="spinner"></div>
@@ -57,7 +65,7 @@ export default function Login() {
         </p>
 
         <form className="login-form" onSubmit={handleSubmit}>
-          {error && <div className="login-error">{error}</div>}
+          {error && <div className="login-error" style={{color: 'red', marginBottom: '10px', fontSize: '0.8rem'}}>{error}</div>}
 
           <div className="form-group">
             <label>Email Address</label>

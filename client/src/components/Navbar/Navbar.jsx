@@ -1,22 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext.jsx"; 
 import "./Navbar.css";
 
 export default function Navbar() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const toggleRef = useRef(null);
   const menuRef = useRef(null);
 
-  // Close on ESC
   useEffect(() => {
-    function onKey(e) {
-      if (e.key === "Escape") setOpen(false);
-    }
+    function onKey(e) { if (e.key === "Escape") setOpen(false); }
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, []);
 
-  // Close when clicking outside (for overlay)
   useEffect(() => {
     function onDocClick(e) {
       if (!open) return;
@@ -26,17 +25,6 @@ export default function Navbar() {
     }
     document.addEventListener("mousedown", onDocClick);
     return () => document.removeEventListener("mousedown", onDocClick);
-  }, [open]);
-
-  // When menu opens, focus the first link
-  useEffect(() => {
-    if (open) {
-      const firstLink = menuRef.current?.querySelector("a");
-      firstLink?.focus();
-    } else {
-      // return focus to toggle
-      toggleRef.current?.focus();
-    }
   }, [open]);
 
   const links = [
@@ -50,17 +38,22 @@ export default function Navbar() {
     { to: "/alumni", label: "Alumni" },
   ];
 
+  // Helper function to navigate to correct dashboard
+  const goToDashboard = () => {
+    if (user?.role === "superadmin") {
+      navigate("/admin/super/users");
+    } else {
+      navigate("/admin/dashboard");
+    }
+  };
+
   return (
     <>
       <nav className="navbar-below" aria-label="Primary">
         <div className="container nav-inner">
-          {/* Hamburger / Toggle (visible on mobile) */}
           <button
             ref={toggleRef}
             className={`nav-toggle ${open ? "open" : ""}`}
-            aria-expanded={open}
-            aria-controls="primary-navigation"
-            aria-label={open ? "Close menu" : "Open menu"}
             onClick={() => setOpen(o => !o)}
           >
             <span className="hamburger-line" />
@@ -68,49 +61,39 @@ export default function Navbar() {
             <span className="hamburger-line" />
           </button>
 
-          {/* Desktop nav (visible on wider screens) */}
           <ul className="nav-list desktop-nav" role="menubar">
             {links.map((l) => (
               <li key={l.to} role="none">
-                <NavLink to={l.to} end={l.end} className={({isActive}) => isActive ? "active" : ""} role="menuitem">
+                <NavLink to={l.to} end={l.end} className={({isActive}) => isActive ? "active" : ""}>
                   {l.label}
                 </NavLink>
               </li>
             ))}
           </ul>
 
-          {/* CTA or placeholder to keep layout (optional) */}
           <div className="nav-cta desktop-only">
-            <a className="btn" href="/notices">Notices</a>
+            {user ? (
+              <button className="btn btn-dashboard" onClick={goToDashboard}>
+                <i className="fas fa-user-shield"></i> Dashboard
+              </button>
+            ) : (
+              <NavLink className="btn" to="/login">Admin Login</NavLink>
+            )}
           </div>
         </div>
       </nav>
 
-      {/* Mobile overlay menu */}
-      <div className={`mobile-menu-overlay ${open ? "show" : ""}`} aria-hidden={!open}>
-        <div className="mobile-menu" id="primary-navigation" ref={menuRef}>
+      <div className={`mobile-menu-overlay ${open ? "show" : ""}`}>
+        <div className="mobile-menu" ref={menuRef}>
           <div className="mobile-menu-top">
-            <div className="mobile-brand">
-              <strong>BCA Dept</strong>
-            </div>
-            <button
-              className="nav-close"
-              aria-label="Close menu"
-              onClick={() => setOpen(false)}
-            >
-              ✕
-            </button>
+            <div className="mobile-brand"><strong>BCA Dept</strong></div>
+            <button className="nav-close" onClick={() => setOpen(false)}>✕</button>
           </div>
 
           <ul className="mobile-nav-list">
             {links.map((l) => (
               <li key={l.to}>
-                <NavLink
-                  to={l.to}
-                  end={l.end}
-                  className={({isActive}) => (isActive ? "active" : "")}
-                  onClick={() => setOpen(false)}
-                >
+                <NavLink to={l.to} end={l.end} onClick={() => setOpen(false)}>
                   {l.label}
                 </NavLink>
               </li>
@@ -118,7 +101,19 @@ export default function Navbar() {
           </ul>
 
           <div className="mobile-menu-footer">
-            <a className="btn" href="/login">Admin Login</a>
+            {user ? (
+              <button 
+                className="btn btn-dashboard-mobile" 
+                onClick={() => { goToDashboard(); setOpen(false); }}
+                style={{ width: '100%', border: 'none', background: 'var(--primary)', color: 'white', padding: '12px', borderRadius: '8px' }}
+              >
+                Go to Dashboard
+              </button>
+            ) : (
+              <NavLink className="btn" to="/login" onClick={() => setOpen(false)} style={{ display: 'block', textAlign: 'center' }}>
+                Admin Login
+              </NavLink>
+            )}
           </div>
         </div>
       </div>

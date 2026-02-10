@@ -27,8 +27,9 @@ import NotFound from "./pages/NotFound/NotFound.jsx";
 /* Admin Pages */
 import AdminDashboard from "./pages/Admin/Dashboard/AdminDashboard.jsx";
 import ManageNews from "./pages/Admin/Management/ManageNews.jsx";
-import AddNews from "./pages/Admin/Management/AddNews.jsx";
-import EditNews from "./pages/Admin/Management/EditNews.jsx";
+import Profile from "./pages/Admin/Dashboard/Profile.jsx";
+// import AddNews from "./pages/Admin/Management/AddNews.jsx";
+// import EditNews from "./pages/Admin/Management/EditNews.jsx";
 
 import ManageEvents from "./pages/Admin/Management/ManageEvents.jsx";
 import ManageGallery from "./pages/Admin/Management/ManageGallery.jsx";
@@ -71,12 +72,10 @@ export default function App() {
         <Route index element={<Navigate to="dashboard" replace />} />
         {/* Default Admin Route */}
         <Route path="dashboard" element={<AdminDashboard />} />
+        <Route path="profile" element={<Profile />} />
 
         {/* Content Management */}
         <Route path="manage/news" element={<ManageNews />} />
-        <Route path="manage/news/add" element={<AddNews />} />
-        <Route path="manage/news/edit/:id" element={<EditNews />} />
-
         <Route path="manage/events" element={<ManageEvents />} />
         <Route path="manage/gallery" element={<ManageGallery />} />
 

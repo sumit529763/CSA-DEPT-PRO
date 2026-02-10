@@ -1,16 +1,27 @@
+import React from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 const ProtectedRoute = ({ children }) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const token = localStorage.getItem("token");
 
-  // No token = not logged in
-  if (!token) {
+  // 1. Wait for AuthContext to finish checking localStorage
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <div className="spinner"></div> 
+        <p style={{ marginLeft: '10px' }}>Verifying Session...</p>
+      </div>
+    );
+  }
+
+  // 2. If no token or no user, send to login
+  if (!token || !user) {
     return <Navigate to="/login" replace />;
   }
 
-  // Token exists = admin or superadmin
+  // 3. User is authenticated
   return children;
 };
 
