@@ -1,56 +1,56 @@
-// src/pages/Admin/Dashboard/AdminDashboard.jsx
 import React from "react";
 import { useAuth } from "../../../context/AuthContext.jsx";
-import "../Styles/Dashboard.css";
+import "./AdminDashboard.css";
 
 export default function AdminDashboard() {
+
   const { user, isSuperAdmin } = useAuth();
 
-  // This data will eventually come from your MongoDB backend
   const stats = [
-    { label: "Total News", count: 14, icon: "fa-newspaper", color: "#004aad" },
-    { label: "Active Events", count: 6, icon: "fa-calendar-check", color: "#00bcd4" },
-    { label: "Gallery Images", count: 24, icon: "fa-images", color: "#f39c12" },
+    { label: "Total News", count: 14, icon: "fa-newspaper" },
+    { label: "Active Events", count: 6, icon: "fa-calendar-check" },
+    { label: "Gallery Images", count: 24, icon: "fa-images" },
   ];
 
   return (
-    <div className="admin-dashboard-view">
-      <div className="dashboard-header">
+    <div className="dashboardPage">
+
+      <div className="dashboardTop">
         <h2>Welcome, {user?.name || "Admin"}</h2>
-        <p>Manage the CSA Department digital presence from here.</p>
+        <p>Manage CSA Department Digital System</p>
       </div>
 
-      {/* 📊 Statistics Grid */}
-      <div className="stats-container">
-        {stats.map((item, index) => (
-          <div className="admin-stat-card" key={index}>
-            <div className="stat-info">
-              <span className="stat-count">{item.count}</span>
-              <span className="stat-label">{item.label}</span>
-            </div>
-            <div className="stat-icon-box" style={{ backgroundColor: item.color }}>
-              <i className={`fas ${item.icon}`}></i>
-            </div>
+      {/* STATS */}
+
+      <div className="statsGrid">
+        {stats.map((s, i) => (
+          <div className="statCard" key={i}>
+            <i className={`fas ${s.icon}`}></i>
+            <h3>{s.count}</h3>
+            <span>{s.label}</span>
           </div>
         ))}
       </div>
 
-      {/* 🛡️ Super Admin Quick Actions */}
+      {/* SUPER ADMIN */}
+
       {isSuperAdmin && (
-        <div className="super-admin-section">
-          <h3 className="admin-subheading">System Control Panel</h3>
-          <div className="action-grid">
-            <div className="action-card">
+        <div className="systemPanel">
+          <h3>System Controls</h3>
+
+          <div className="panelGrid">
+            <div className="panelCard">
               <i className="fas fa-user-plus"></i>
-              <span>Create New Admin</span>
+              <span>Create Admin</span>
             </div>
-            <div className="action-card">
+            <div className="panelCard">
               <i className="fas fa-shield-alt"></i>
-              <span>View Security Logs</span>
+              <span>View Logs</span>
             </div>
           </div>
         </div>
       )}
+
     </div>
   );
 }

@@ -1,0 +1,57 @@
+.dashboardPage {
+  padding: 24px;
+}
+
+.dashboardTop {
+  margin-bottom: 24px;
+}
+
+.dashboardTop h2 {
+  margin-bottom: 4px;
+}
+
+/* STATS */
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
+  gap: 16px;
+}
+
+.statCard {
+  background: white;
+  padding: 18px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+  transition: 0.2s;
+}
+
+.statCard:hover {
+  transform: translateY(-3px);
+}
+
+.statCard i {
+  font-size: 22px;
+  margin-bottom: 8px;
+  color: #2563eb;
+}
+
+/* PANEL */
+
+.systemPanel {
+  margin-top: 30px;
+}
+
+.panelGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(180px,1fr));
+  gap: 16px;
+}
+
+.panelCard {
+  background: #f3f4f6;
+  padding: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}

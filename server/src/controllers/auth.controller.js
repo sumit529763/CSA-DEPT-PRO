@@ -1,19 +1,40 @@
 const User = require("../models/User.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const axios = require("axios");
 
 exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body;
 
-    // 1️⃣ Check fields
-    if (!email || !password) {
+    const { email, password, captchaToken } = req.body;
+
+    if (!email || !password || !captchaToken) {
       return res.status(400).json({
-        message: "Email and password are required",
+        message: "All fields including captcha are required",
       });
     }
 
-    // 2️⃣ Find user
+    // 🔐 Verify CAPTCHA with Google
+    const captchaVerifyURL = "https://www.google.com/recaptcha/api/siteverify";
+
+    const captchaResponse = await axios.post(
+      captchaVerifyURL,
+      null,
+      {
+        params: {
+          secret: process.env.RECAPTCHA_SECRET_KEY,
+          response: captchaToken,
+        },
+      }
+    );
+
+    if (!captchaResponse.data.success) {
+      return res.status(400).json({
+        message: "Captcha verification failed",
+      });
+    }
+
+    // Find user
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -22,7 +43,7 @@ exports.login = async (req, res) => {
       });
     }
 
-    // 3️⃣ Compare password
+    // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
@@ -31,18 +52,17 @@ exports.login = async (req, res) => {
       });
     }
 
-    // 4️⃣ Create token (WITH ROLE)
+    // Create JWT
     const token = jwt.sign(
       {
         id: user._id,
-        role: user.role, // 🔥 REQUIRED
+        role: user.role,
       },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
 
-    // 5️⃣ Send response
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       token,
       user: {
@@ -51,9 +71,10 @@ exports.login = async (req, res) => {
         role: user.role,
       },
     });
+
   } catch (error) {
     console.error("LOGIN ERROR:", error);
-    res.status(500).json({
+    return res.status(500).json({
       message: "Server error",
     });
   }

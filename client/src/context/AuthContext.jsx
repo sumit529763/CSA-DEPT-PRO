@@ -5,7 +5,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // Prevents kick-out on refresh
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const restoreSession = () => {
@@ -14,7 +14,6 @@ export const AuthProvider = ({ children }) => {
         const token = localStorage.getItem("token");
 
         if (savedUser && token) {
-          // If we have both, restore the user to state
           setUser(JSON.parse(savedUser));
         }
       } catch (err) {
@@ -22,23 +21,23 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem("user");
         localStorage.removeItem("token");
       } finally {
-        setLoading(false); // Check complete
+        setLoading(false);
       }
     };
 
     restoreSession();
   }, []);
 
-  const login = async (email, password) => {
-    const data = await authService.login(email, password);
-    
-    // Save to State
+  // ✅ FIXED LOGIN (Now Accepts captchaToken)
+  const login = async (email, password, captchaToken) => {
+
+    const data = await authService.login(email, password, captchaToken);
+
     setUser(data.user);
-    
-    // Save to LocalStorage for persistence
+
     localStorage.setItem("user", JSON.stringify(data.user));
     localStorage.setItem("token", data.token);
-    
+
     return data;
   };
 
@@ -58,7 +57,7 @@ export const AuthProvider = ({ children }) => {
         isSuperAdmin,
         login,
         logout,
-        loading // Shared so ProtectedRoute knows when to wait
+        loading
       }}
     >
       {children}

@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
+import ReCAPTCHA from "react-google-recaptcha";
 import "./Login.css";
 
 export default function Login() {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [captchaToken, setCaptchaToken] = useState(null);
   const [error, setError] = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const { login, user, loading } = useAuth();
   const navigate = useNavigate();
 
-  // 🔥 PERSISTENCE FIX: If already logged in, redirect automatically
+  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+
   useEffect(() => {
     if (!loading && user) {
       if (user.role === "superadmin") {
@@ -26,24 +30,26 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    if (!captchaToken) {
+      setError("Please verify that you are not a robot.");
+      return;
+    }
+
     setIsLoggingIn(true);
 
     try {
-      const response = await login(email, password);
-      
-      // Delay for professional effect
-      setTimeout(() => {
-        if (response.user.role === "superadmin") {
-          navigate("/admin/super/users", { replace: true });
-        } else {
-          navigate("/admin/dashboard", { replace: true });
-        }
-      }, 1500);
+      const response = await login(email, password, captchaToken);
+
+      if (response.user.role === "superadmin") {
+        navigate("/admin/super/users", { replace: true });
+      } else {
+        navigate("/admin/dashboard", { replace: true });
+      }
 
     } catch (error) {
-      console.error("LOGIN ERROR:", error.response?.data || error.message);
       setIsLoggingIn(false);
-      setError(error.response?.data?.message || "Login failed. Check credentials.");
+      setError(error.response?.data?.message || "Login failed.");
     }
   };
 
@@ -65,7 +71,8 @@ export default function Login() {
         </p>
 
         <form className="login-form" onSubmit={handleSubmit}>
-          {error && <div className="login-error" style={{color: 'red', marginBottom: '10px', fontSize: '0.8rem'}}>{error}</div>}
+
+          {error && <div className="login-error">{error}</div>}
 
           <div className="form-group">
             <label>Email Address</label>
@@ -89,6 +96,13 @@ export default function Login() {
             />
           </div>
 
+          <div style={{ marginBottom: "20px" }}>
+            <ReCAPTCHA
+              sitekey={siteKey}
+              onChange={(token) => setCaptchaToken(token)}
+            />
+          </div>
+
           <button type="submit" className="login-btn">
             Login
           </button>
@@ -96,6 +110,7 @@ export default function Login() {
           <p className="login-note">
             Need access? Contact HOD or system administrator.
           </p>
+
         </form>
       </section>
     </main>

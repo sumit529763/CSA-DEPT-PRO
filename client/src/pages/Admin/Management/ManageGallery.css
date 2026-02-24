@@ -1,0 +1,102 @@
+.manageGalleryPage {
+  padding: 24px;
+}
+
+/* HEADER */
+
+.galleryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.uploadPhotoBtn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* GRID */
+
+.galleryGrid {
+  column-count: 3;
+  column-gap: 16px;
+}
+
+@media(max-width:900px){
+  .galleryGrid {
+    column-count: 2;
+  }
+}
+
+@media(max-width:600px){
+  .galleryGrid {
+    column-count: 1;
+  }
+}
+
+/* CARD */
+
+.galleryCard {
+  break-inside: avoid;
+  margin-bottom: 16px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+}
+
+/* IMAGE */
+
+.imgWrapper {
+  position: relative;
+}
+
+.imgWrapper img {
+  width: 100%;
+  display: block;
+}
+
+/* HOVER */
+
+.imgOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: 0.2s;
+}
+
+.imgWrapper:hover .imgOverlay {
+  opacity: 1;
+}
+
+.imgOverlay button {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* CAPTION */
+
+.caption {
+  padding: 10px;
+  font-size: 14px;
+}
+
+/* EMPTY */
+
+.emptyBox {
+  text-align: center;
+  padding: 40px;
+}

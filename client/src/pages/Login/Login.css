@@ -163,3 +163,49 @@
     font-size: 1.5rem;
   }
 }
+
+
+
+
+/* CAPTCHA STYLING */
+
+.captcha-container {
+  margin-bottom: 20px;
+}
+
+.captcha-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f4f7fb;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+.captcha-refresh {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+.captcha-refresh:hover {
+  transform: rotate(90deg);
+}
+
+.captcha-container input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.login-error {
+  color: #e63946;
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+}

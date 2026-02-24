@@ -1,13 +1,10 @@
-// src/components/UI/Card.jsx
 import React from "react";
-import "./Card.css"; // <-- Import CSS
+import "./Card.css";
 
-export default function Card({ title, body, children }) {
+export default function Card({ title, children, className = "" }) {
   return (
-    <div className="card-base"> {/* <-- Use CSS class */}
-      <h4 className="card-title">{title}</h4>
-      {/* Note: It is better to use the <h4> tag just for the title 
-          and render the main 'body' text as a child for maximum flexibility. */}
+    <div className={`card-base ${className}`}>
+      {title && <h4 className="card-title">{title}</h4>}
       {children}
     </div>
   );

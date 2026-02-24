@@ -1,0 +1,36 @@
+.auditLogsPage {
+  padding: 24px;
+}
+
+.logsHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.logsHeader input {
+  padding: 6px 10px;
+}
+
+.logsTimeline {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.logCard {
+  display: flex;
+  background: white;
+  padding: 14px;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+}
+
+.logTime {
+  color: #6b7280;
+  margin-right: 14px;
+}
+
+.logInfo p {
+  margin: 2px 0;
+}

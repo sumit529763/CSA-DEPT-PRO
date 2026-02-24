@@ -1,0 +1,87 @@
+.manageNewsPage {
+  padding: 24px;
+}
+
+/* HEADER */
+
+.newsPageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.addNewsBtn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* GRID */
+
+.newsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(260px,1fr));
+  gap: 18px;
+}
+
+/* CARD */
+
+.newsCard {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+  transition: 0.2s;
+}
+
+.newsCard:hover {
+  transform: translateY(-3px);
+}
+
+.newsCard img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+/* BODY */
+
+.newsCardBody {
+  padding: 12px;
+}
+
+.newsActions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.newsActions button {
+  flex: 1;
+  padding: 6px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.newsActions button:first-child {
+  background: #3b82f6;
+  color: white;
+}
+
+.newsActions button:last-child {
+  background: #ef4444;
+  color: white;
+}
+
+/* EMPTY */
+
+.emptyBox,
+.loadingBox {
+  text-align: center;
+  padding: 40px;
+}

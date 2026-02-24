@@ -14,7 +14,7 @@ export default function News() {
       try {
         setLoading(true);
 
-        const res = await axios.get("http://localhost:5000/api/news");
+        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/news`);
 
         // backend response → { success, count, data }
         setNewsList(res.data.data || []);

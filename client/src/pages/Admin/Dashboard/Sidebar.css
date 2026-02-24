@@ -1,0 +1,131 @@
+.admin-sidebar {
+  width: 260px;
+  height: 100vh;
+  background: linear-gradient(to bottom,#0f172a,#020617);
+  color: #e2e8f0;
+  padding: 18px 14px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  transition: 0.3s;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+  .admin-sidebar {
+    left: -260px;
+  }
+  .admin-sidebar.open {
+    left: 0;
+  }
+}
+
+/* BRAND */
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg,#2563eb,#3b82f6);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.view-site-link {
+  font-size: 12px;
+  color: #94a3b8;
+  text-decoration: none;
+}
+
+/* PROFILE */
+
+.sidebar-profile-card {
+  background: #1e293b;
+  padding: 12px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 0;
+  cursor: pointer;
+}
+
+.profile-avatar {
+  width: 40px;
+  height: 40px;
+  background: #2563eb;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-name {
+  font-size: 14px;
+}
+
+.profile-status {
+  font-size: 12px;
+  color: #22c55e;
+}
+
+/* NAV */
+
+.sidebar-nav {
+  flex: 1;
+}
+
+.nav-group {
+  margin-bottom: 14px;
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  margin-bottom: 6px;
+  text-decoration: none;
+  color: #cbd5f5;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.sidebar-nav a:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.sidebar-nav a.active {
+  background: linear-gradient(to right,#2563eb,#3b82f6);
+  color: white;
+}
+
+/* DIVIDER */
+
+.sidebar-divider {
+  font-size: 12px;
+  color: #64748b;
+  margin: 10px 8px;
+}
+
+/* LOGOUT */
+
+.sidebar-logout {
+  padding: 12px;
+  border: none;
+  background: #ef4444;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}

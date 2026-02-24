@@ -1,113 +1,161 @@
-// src/pages/Events/Events.jsx
-import React, { useState, useEffect } from 'react';
-import SectionTitle from '../../components/UI/SectionTitle';
-import Card from '../../components/UI/Card';
-import './Events.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import SectionTitle from "../../components/UI/SectionTitle";
+import Card from "../../components/UI/Card";
+import "./Events.css";
 
 export default function Events() {
+
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchEvents = () => {
-      const mockEvents = [
-        {
-          _id: 'e1',
-          title: "Code-A-Thon 2026",
-          date: "2026-02-20",
-          time: "09:00 AM - 06:00 PM",
-          venue: "Main Computing Lab, CSA Dept.",
-          category: "Hackathon",
-          description: "A 9-hour intensive coding challenge to solve real-world problems using MERN stack and AI.",
-          image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1000",
-          status: "Upcoming"
-        },
-        {
-          _id: 'e2',
-          title: "Seminar on Cyber Security Trends",
-          date: "2026-01-30",
-          time: "11:00 AM - 01:00 PM",
-          venue: "Auditorium, GIET University",
-          category: "Seminar",
-          description: "Industry experts discuss the evolving landscape of cybersecurity and career opportunities.",
-          image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1000",
-          status: "Upcoming"
-        },
-        {
-          _id: 'e3',
-          title: "Workshop: React & Vite Modern Workflow",
-          date: "2025-12-15",
-          time: "10:00 AM - 04:00 PM",
-          venue: "Seminar Hall 2",
-          category: "Workshop",
-          description: "Hands-on training session for 2nd year students on building high-performance web apps.",
-          image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=1000",
-          status: "Past"
-        }
-      ];
+  const API_URL = `${import.meta.env.VITE_API_BASE_URL}/api/events`;
 
-      setTimeout(() => {
-        setEvents(mockEvents);
+  useEffect(() => {
+
+    const fetchEvents = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get(API_URL);
+        setEvents(res.data.data || []);
+      } catch (error) {
+        console.error("Failed to fetch events", error);
+      } finally {
         setLoading(false);
-      }, 1000); // 1s delay for professional shimmer effect
+      }
     };
+
     fetchEvents();
+
   }, []);
+
+  const getStatus = (date) => {
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    const eventDate = new Date(date);
+    eventDate.setHours(0,0,0,0);
+
+    return eventDate < today ? "Past" : "Upcoming";
+  };
 
   return (
     <div className="events-page container section-padding">
-      <SectionTitle 
-        title="Departmental Events" 
-        subtitle="Experience innovation through our workshops, hackathons, and technical seminars" 
+
+      <SectionTitle
+        title="Departmental Events"
+        subtitle="Experience innovation through workshops, hackathons & seminars"
       />
 
       <div className="events-grid">
+
         {loading ? (
-          // --- SKELETON LOADING STATE ---
-          [1, 2, 3].map((n) => (
+
+          [1,2,3].map(n => (
             <Card key={n} className="event-card skeleton-card">
               <div className="skeleton ev-img-sk"></div>
               <div className="event-content">
-                <div className="skeleton sk-ev-date"></div> {/* Date-tag placeholder */}
-                <div className="event-main-info">
-                  <div className="skeleton sk-text"></div>      {/* Title placeholder */}
-                  <div className="skeleton sk-text"></div>      {/* Description line 1 */}
-                  <div className="skeleton sk-text-short"></div>{/* Description line 2 */}
-                  <div className="skeleton sk-button"></div>    {/* Register button placeholder */}
-                </div>
+                <div className="skeleton sk-text"></div>
+                <div className="skeleton sk-text"></div>
+                <div className="skeleton sk-button"></div>
               </div>
             </Card>
           ))
-        ) : events.map((event) => (
-          <Card key={event._id} className={`event-card ${event.status.toLowerCase()}`}>
-            <div className="event-img-box">
-              <img src={event.image} alt={event.title} />
-              <span className="event-badge">{event.category}</span>
-            </div>
-            
-            <div className="event-content">
-              <div className="event-date-tag">
-                <span className="ev-month">{new Date(event.date).toLocaleString('default', { month: 'short' })}</span>
-                <span className="ev-day">{new Date(event.date).getDate()}</span>
-              </div>
-              
-              <div className="event-main-info">
-                <h3 className="event-title">{event.title}</h3>
-                <p className="event-desc">{event.description}</p>
-                
-                <div className="event-details-list">
-                  <span><i className="far fa-clock"></i> {event.time}</span>
-                  <span><i className="fas fa-map-marker-alt"></i> {event.venue}</span>
+
+        ) : events.length > 0 ? (
+
+          events.map(event => {
+
+            const status = getStatus(event.date);
+
+            return (
+              <Card
+                key={event._id}
+                className={`event-card ${status.toLowerCase()}`}
+              >
+
+                {/* IMAGE */}
+                <div className="event-img-box">
+
+                  <img
+                    src={
+                      event.image
+                        ? event.image
+                        : "https://via.placeholder.com/400x250?text=Event"
+                    }
+                    alt={event.title}
+                  />
+
+                  <span className="event-badge">
+                    {event.category}
+                  </span>
+
                 </div>
 
-                <button className={`btn-event ${event.status === 'Past' ? 'btn-disabled' : ''}`}>
-                  {event.status === 'Past' ? 'View Highlights' : 'Register Now'}
-                </button>
-              </div>
-            </div>
-          </Card>
-        ))}
+                {/* CONTENT */}
+                <div className="event-content">
+
+                  <div className="event-date-tag">
+                    <span className="ev-month">
+                      {new Date(event.date).toLocaleString("default", {
+                        month: "short",
+                      })}
+                    </span>
+
+                    <span className="ev-day">
+                      {new Date(event.date).getDate()}
+                    </span>
+                  </div>
+
+                  <div className="event-main-info">
+
+                    <h3 className="event-title">
+                      {event.title}
+                    </h3>
+
+                    <p className="event-desc">
+                      {event.description}
+                    </p>
+
+                    <div className="event-details-list">
+                      <span>
+                        <i className="far fa-clock"></i>
+                        {" "} {event.time}
+                      </span>
+
+                      <span>
+                        <i className="fas fa-map-marker-alt"></i>
+                        {" "} {event.venue}
+                      </span>
+                    </div>
+
+                    <button
+                      className={`btn-event ${
+                        status === "Past" ? "btn-disabled" : ""
+                      }`}
+                      disabled={status === "Past"}
+                    >
+                      {status === "Past"
+                        ? "Event Completed"
+                        : "Register Now"}
+                    </button>
+
+                  </div>
+
+                </div>
+
+              </Card>
+            );
+          })
+
+        ) : (
+          <p style={{ textAlign: "center" }}>
+            No events available.
+          </p>
+        )}
+
       </div>
+
     </div>
   );
 }
