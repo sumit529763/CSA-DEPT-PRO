@@ -1,0 +1,143 @@
+/* src/pages/Admin/Styles/Management.css */
+
+:root {
+  --primary: #004aad;
+  --primary-hover: #003a8c;
+  --danger: #e53e3e;
+  --text-dark: #1a202c;
+  --text-gray: #64748b;
+  --bg-light: #f8fafc;
+  --border-color: #edf2f7;
+}
+
+.management-view {
+  padding: 25px;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Header Adjustments for Mobile */
+.management-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  gap: 15px;
+}
+
+@media (max-width: 600px) {
+  .management-header {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  .btn-add { width: 100%; justify-content: center; }
+}
+
+.btn-add {
+  background: var(--primary);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* --- VISIBILITY HELPERS --- */
+.mobile-only { display: none; }
+
+/* --- TABLE (Desktop Only) --- */
+.table-wrapper {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.admin-table { width: 100%; border-collapse: collapse; }
+.admin-table th { background: #f8fafc; padding: 18px; text-align: left; color: var(--text-gray); border-bottom: 2px solid var(--border-color); }
+.admin-table td { padding: 16px; border-bottom: 1px solid var(--border-color); }
+.table-thumb { width: 70px; height: 50px; object-fit: cover; border-radius: 8px; }
+
+/* --- MOBILE CARD DESIGN --- */
+@media (max-width: 768px) {
+  .desktop-only { display: none; }
+  .mobile-only { display: block; }
+
+  .card-list { display: flex; flex-direction: column; gap: 15px; }
+
+  .news-mobile-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+
+  .card-content { padding: 15px; }
+
+  .card-title {
+    margin: 0 0 15px 0;
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    line-height: 1.4;
+  }
+
+  .card-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .btn-edit-mobile, .btn-delete-mobile {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .btn-edit-mobile { background: #ebf4ff; color: var(--primary); }
+  .btn-delete-mobile { background: #fff5f5; color: var(--danger); }
+}
+
+/* --- MODAL SCROLL FIX --- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.modal-card {
+  background: white;
+  width: 95%;
+  max-width: 500px;
+  max-height: 90vh;
+  border-radius: 20px;
+  overflow-y: auto; /* Crucial for small screens */
+  padding: 20px;
+}
+
+/* Buttons */
+.action-btns { display: flex; gap: 10px; }
+.btn-edit { background: #ebf4ff; color: var(--primary); padding: 8px 12px; border-radius: 6px; border: none; }
+.btn-delete { background: #fff5f5; color: var(--danger); padding: 8px 12px; border-radius: 6px; border: none; }

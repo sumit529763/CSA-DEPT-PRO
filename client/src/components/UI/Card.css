@@ -1,0 +1,12 @@
+.card-base {
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--white);
+  box-shadow: var(--shadow-soft);
+}
+
+.card-title {
+  margin-bottom: 8px;
+  font-weight: 600;
+}
