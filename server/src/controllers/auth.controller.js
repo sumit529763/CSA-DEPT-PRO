@@ -5,16 +5,17 @@ const axios = require("axios");
 
 exports.login = async (req, res) => {
   try {
-
     const { email, password, captchaToken } = req.body;
 
+    // ================= VALIDATION =================
     if (!email || !password || !captchaToken) {
       return res.status(400).json({
-        message: "All fields including captcha are required",
+        success: false,
+        message: "Email, password, and captcha are required",
       });
     }
 
-    // 🔐 Verify CAPTCHA with Google
+    // ================= CAPTCHA VERIFY =================
     const captchaVerifyURL = "https://www.google.com/recaptcha/api/siteverify";
 
     const captchaResponse = await axios.post(
@@ -30,40 +31,47 @@ exports.login = async (req, res) => {
 
     if (!captchaResponse.data.success) {
       return res.status(400).json({
+        success: false,
         message: "Captcha verification failed",
       });
     }
 
-    // Find user
+    // ================= FIND USER =================
     const user = await User.findOne({ email });
 
     if (!user) {
       return res.status(401).json({
+        success: false,
         message: "Invalid email or password",
       });
     }
 
-    // Compare password
+    // ================= PASSWORD CHECK =================
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
       return res.status(401).json({
+        success: false,
         message: "Invalid email or password",
       });
     }
 
-    // Create JWT
+    // ================= JWT TOKEN =================
+    const payload = {
+      id: user._id,
+      role: user.role,
+    };
+
     const token = jwt.sign(
-      {
-        id: user._id,
-        role: user.role,
-      },
+      payload,
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
 
+    // ================= RESPONSE =================
     return res.status(200).json({
       success: true,
+      message: "Login successful",
       token,
       user: {
         id: user._id,
@@ -74,7 +82,9 @@ exports.login = async (req, res) => {
 
   } catch (error) {
     console.error("LOGIN ERROR:", error);
+
     return res.status(500).json({
+      success: false,
       message: "Server error",
     });
   }

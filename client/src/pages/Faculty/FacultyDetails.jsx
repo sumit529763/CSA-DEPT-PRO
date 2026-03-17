@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import hodpic from '../../assets/images/hod-pic.jpeg'; // Default import
+import hodpic from '../../assets/images/hod-pic.jpeg'; // Ensure this path is correct
 import './Faculty.css';
 
 export default function FacultyDetails() {
@@ -9,7 +9,7 @@ export default function FacultyDetails() {
   const [member, setMember] = useState(null);
 
   useEffect(() => {
-    // This array should ideally come from a central data file or MongoDB
+    // Full data structure preserved exactly as discussed
     const facultyData = [
       {
         id: "satya-narayan-das",
@@ -39,55 +39,71 @@ export default function FacultyDetails() {
 
     const found = facultyData.find(f => f.id === id);
     setMember(found);
-    window.scrollTo(0, 0); // Scroll to top when page opens
+    window.scrollTo(0, 0); 
   }, [id]);
 
-  if (!member) return <div className="container section-padding"><h2>Faculty profile not found.</h2></div>;
+  if (!member) {
+    return (
+      <div className="container section-padding">
+        <h2 style={{textAlign: 'center', marginTop: '50px'}}>Faculty profile not found.</h2>
+        <button className="btn-back" onClick={() => navigate('/faculty')} style={{margin: '20px auto', display: 'block'}}>
+           Return to Faculty List
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <div className="faculty-details-page container section-padding">
-      <button className="back-btn" onClick={() => navigate('/faculty')}>
-        <i className="fas fa-arrow-left"></i> Back to Faculty
-      </button>
-      
-      <div className="profile-header">
-        <div className="profile-img-container">
-          <img src={member.image} alt={member.name} />
-        </div>
-        <div className="profile-main-info">
-          <span className="hod-badge">{member.designation}</span>
-          <h1>{member.name}</h1>
-          <p className="p-qualification"><strong>{member.qualification}</strong></p>
-          <div className="p-contact-row">
-            <a href={`mailto:${member.email}`} className="contact-link">
-              <i className="fas fa-envelope"></i> {member.email}
-            </a>
+    <div className="faculty-details-wrapper">
+      <div className="container profile-container">
+        {/* Navigation / Breadcrumb */}
+        <nav className="profile-nav">
+          <button className="btn-back" onClick={() => navigate('/faculty')}>
+            <i className="fas fa-arrow-left"></i> Back to Faculty
+          </button>
+        </nav>
+
+        <div className="profile-main-card">
+          {/* Left Side: Image and Quick Contact Chips */}
+          <div className="profile-sidebar">
+            <div className="profile-image-frame">
+              <img src={member.image} alt={member.name} />
+            </div>
+            <div className="profile-quick-links">
+              <a href={`mailto:${member.email}`} className="social-link-item">
+                <i className="fas fa-envelope"></i> 
+                <span>Email Member</span>
+              </a>
+              <a href={member.scholarUrl} target="_blank" rel="noreferrer" className="social-link-item scholar-link">
+                <i className="fas fa-graduation-cap"></i> 
+                <span>Scholar Profile</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Right Side: Detailed Biography and Skills */}
+          <div className="profile-content">
+            <header className="profile-header-info">
+              <span className="designation-badge">{member.designation}</span>
+              <h1 className="faculty-full-name">{member.name}</h1>
+              <p className="academic-degree"><strong>{member.qualification}</strong></p>
+            </header>
+
+            <section className="profile-section">
+              <h3><i className="fas fa-user-tie"></i> Biography</h3>
+              <p className="bio-text">{member.bio}</p>
+            </section>
+
+            <section className="profile-section">
+              <h3><i className="fas fa-lightbulb"></i> Research Expertise</h3>
+              <div className="expertise-tags">
+                {member.expertise.map((item, index) => (
+                  <span key={index} className="expertise-tag">{item}</span>
+                ))}
+              </div>
+            </section>
           </div>
         </div>
-      </div>
-
-      <div className="profile-content-grid">
-        <div className="profile-card">
-          <h3><i className="fas fa-user-tie"></i> Biography</h3>
-          <p>{member.bio}</p>
-        </div>
-
-        <div className="profile-card">
-          <h3><i className="fas fa-lightbulb"></i> Expertise</h3>
-          <ul className="spec-list">
-            {member.expertise.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      <div className="scholar-section-box">
-        <h3>Research & Publications</h3>
-        <p>For a detailed list of research papers and citation metrics, visit the official profile.</p>
-        <a href={member.scholarUrl} target="_blank" rel="noreferrer" className="scholar-btn-large">
-          <i className="fas fa-graduation-cap"></i> View Google Scholar Profile
-        </a>
       </div>
     </div>
   );
