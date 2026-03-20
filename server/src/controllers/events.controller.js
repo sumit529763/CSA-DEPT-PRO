@@ -1,10 +1,31 @@
 const Event = require("../models/Event.model");
 const cloudinary = require("../config/cloudinary");
+const streamifier = require("streamifier");
+
+/**
+ * 🔧 Helper: Upload buffer to Cloudinary
+ */
+const uploadFromBuffer = (buffer) => {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        folder: "events",
+        quality: "auto",
+        fetch_format: "auto",
+      },
+      (error, result) => {
+        if (error) reject(error);
+        else resolve(result);
+      }
+    );
+
+    streamifier.createReadStream(buffer).pipe(stream);
+  });
+};
 
 /**
  * ===============================
  * CREATE EVENT
- * Admin / Super Admin only
  * ===============================
  */
 exports.createEvent = async (req, res) => {
@@ -28,14 +49,9 @@ exports.createEvent = async (req, res) => {
 
     let imageUrl = "";
 
-    // 📸 Image Upload (Optional)
+    // 📸 Image Upload (FIXED)
     if (req.file) {
-      const uploadResult = await cloudinary.uploader.upload(req.file.path, {
-        folder: "events",
-        quality: "auto",
-        fetch_format: "auto",
-      });
-
+      const uploadResult = await uploadFromBuffer(req.file.buffer);
       imageUrl = uploadResult.secure_url;
     }
 
@@ -67,7 +83,7 @@ exports.createEvent = async (req, res) => {
 
 /**
  * ===============================
- * GET ALL EVENTS (Public)
+ * GET ALL EVENTS
  * ===============================
  */
 exports.getAllEvents = async (req, res) => {
@@ -91,7 +107,6 @@ exports.getAllEvents = async (req, res) => {
 /**
  * ===============================
  * UPDATE EVENT
- * Admin / Super Admin only
  * ===============================
  */
 exports.updateEvent = async (req, res) => {
@@ -106,14 +121,9 @@ exports.updateEvent = async (req, res) => {
       });
     }
 
-    // 📸 Replace image if new one uploaded
+    // 📸 Replace image if uploaded (FIXED)
     if (req.file) {
-      const uploadResult = await cloudinary.uploader.upload(req.file.path, {
-        folder: "events",
-        quality: "auto",
-        fetch_format: "auto",
-      });
-
+      const uploadResult = await uploadFromBuffer(req.file.buffer);
       req.body.image = uploadResult.secure_url;
     }
 
@@ -140,7 +150,6 @@ exports.updateEvent = async (req, res) => {
 /**
  * ===============================
  * DELETE EVENT
- * Admin / Super Admin only
  * ===============================
  */
 exports.deleteEvent = async (req, res) => {
