@@ -1,6 +1,12 @@
+/* ===== PAGE ===== */
+
 .manageUsersPage {
-  padding: 24px;
+  padding: 28px;
+  background: #f8fafc;
+  min-height: 100vh;
 }
+
+/* ===== HEADER ===== */
 
 .usersHeader {
   display: flex;
@@ -9,40 +15,81 @@
   margin-bottom: 24px;
 }
 
+.usersHeader h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.usersHeader p {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* BUTTON */
+
 .addAdminBtn {
-  background: #2563eb;
+  background: linear-gradient(135deg, #2563eb, #4f46e5);
   color: white;
   border: none;
-  padding: 8px 18px;
-  border-radius: 6px;
+  padding: 10px 20px;
+  border-radius: 8px;
   cursor: pointer;
+  font-size: 13px;
+  transition: 0.3s;
 }
+
+.addAdminBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+}
+
+/* ===== GRID ===== */
 
 .usersGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill,minmax(260px,1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
 }
+
+/* ===== CARD ===== */
 
 .userCard {
   background: white;
-  padding: 14px;
-  border-radius: 10px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+  padding: 16px;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+  transition: 0.3s;
 }
+
+.userCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.1);
+}
+
+/* ===== CARD TOP ===== */
 
 .userTop {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
+
+.userTop h4 {
+  margin: 0;
+  font-size: 16px;
+}
+
+/* ROLE TAG */
 
 .roleTag {
-  padding: 3px 8px;
-  border-radius: 4px;
-  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
 }
 
-.roleTag.super-admin {
+.roleTag.superadmin {
   background: #6366f1;
   color: white;
 }
@@ -52,10 +99,15 @@
   color: white;
 }
 
+/* EMAIL */
+
 .userEmail {
-  font-size: 14px;
-  margin: 6px 0;
+  font-size: 13px;
+  margin: 8px 0;
+  color: #64748b;
 }
+
+/* ===== BOTTOM ===== */
 
 .userBottom {
   display: flex;
@@ -63,18 +115,161 @@
   align-items: center;
 }
 
+/* STATUS */
+
+.status {
+  font-size: 12px;
+  font-weight: 500;
+}
+
 .status.Active {
-  color: green;
+  color: #16a34a;
 }
 
 .status.Inactive {
-  color: red;
+  color: #ef4444;
 }
+
+/* ACTION BUTTONS */
 
 .userActions button {
   margin-left: 6px;
-  padding: 4px 8px;
+  padding: 5px 10px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
+  font-size: 12px;
+}
+
+.userActions button:first-child {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.userActions button:last-child {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* ===== MODAL FIX (IMPORTANT) ===== */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+
+  overflow: hidden; /* prevents background scroll */
+}
+
+/* MODAL BOX */
+
+.modalContent {
+  width: 480px;
+  max-height: 90vh;
+  background: white;
+  border-radius: 16px;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+}
+
+/* ANIMATION */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* HEADER */
+
+.modalContent h3 {
+  margin: 0;
+  padding: 16px 20px;
+  border-bottom: 1px solid #eee;
+  font-size: 17px;
+}
+
+/* 🔥 SCROLLABLE BODY (FIXED ISSUE) */
+
+.modalContent form {
+  flex: 1;
+  overflow-y: auto;   /* ✅ internal scroll */
+  padding: 18px;
+}
+
+/* INPUTS */
+
+.modalContent input,
+.modalContent textarea {
+  width: 100%;
+  margin-bottom: 14px;
+  padding: 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+.modalContent input:focus,
+.modalContent textarea:focus {
+  border-color: #2563eb;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(37,99,235,0.1);
+}
+
+.modalContent textarea {
+  min-height: 80px;
+}
+
+/* ===== ACTIONS ===== */
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* BUTTONS */
+
+.modalActions button {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.modalActions button:first-child {
+  background: #2563eb;
+  color: white;
+}
+
+.modalActions button:first-child:hover {
+  background: #1d4ed8;
+}
+
+.modalActions button:last-child {
+  background: #e5e7eb;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 600px) {
+  .modalContent {
+    width: 92%;
+  }
 }

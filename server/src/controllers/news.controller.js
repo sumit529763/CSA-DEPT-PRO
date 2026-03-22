@@ -1,6 +1,25 @@
 const News = require("../models/News.model");
 const cloudinary = require("../config/cloudinary");
-const fs = require("fs");
+const streamifier = require("streamifier");
+
+// 🔧 Helper: Upload buffer to Cloudinary
+const uploadFromBuffer = (buffer) => {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        folder: "news",
+        quality: "auto",
+        fetch_format: "auto",
+      },
+      (error, result) => {
+        if (error) reject(error);
+        else resolve(result);
+      }
+    );
+
+    streamifier.createReadStream(buffer).pipe(stream);
+  });
+};
 
 // ================= CREATE NEWS =================
 exports.createNews = async (req, res) => {
@@ -16,15 +35,10 @@ exports.createNews = async (req, res) => {
 
     let imageUrl = "";
 
+    // ✅ FIXED: use buffer instead of path
     if (req.file) {
-      const result = await cloudinary.uploader.upload(req.file.path, {
-        folder: "news",
-        quality: "auto",
-        fetch_format: "auto",
-      });
-
+      const result = await uploadFromBuffer(req.file.buffer);
       imageUrl = result.secure_url;
-      fs.unlinkSync(req.file.path); // remove temp file
     }
 
     const news = await News.create({
@@ -92,18 +106,27 @@ exports.getSingleNews = async (req, res) => {
 // ================= UPDATE NEWS =================
 exports.updateNews = async (req, res) => {
   try {
-    const updatedNews = await News.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+    const newsId = req.params.id;
 
-    if (!updatedNews) {
+    const news = await News.findById(newsId);
+    if (!news) {
       return res.status(404).json({
         success: false,
         message: "News not found",
       });
     }
+
+    // ✅ FIXED: handle image update properly
+    if (req.file) {
+      const result = await uploadFromBuffer(req.file.buffer);
+      req.body.image = result.secure_url;
+    }
+
+    const updatedNews = await News.findByIdAndUpdate(
+      newsId,
+      req.body,
+      { new: true }
+    );
 
     res.status(200).json({
       success: true,

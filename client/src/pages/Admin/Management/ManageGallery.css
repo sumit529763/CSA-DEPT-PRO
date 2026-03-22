@@ -1,102 +1,217 @@
-.manageGalleryPage {
-  padding: 24px;
+/* ===== PAGE ===== */
+
+.manageGalleryPage{
+padding:24px;
 }
 
-/* HEADER */
+/* ===== HEADER ===== */
 
-.galleryHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
+.galleryHeader{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:22px;
+flex-wrap:wrap;
+gap:10px;
 }
 
-.uploadPhotoBtn {
-  background: #2563eb;
-  color: white;
-  border: none;
-  padding: 8px 18px;
-  border-radius: 6px;
-  cursor: pointer;
+.galleryHeader h2{
+margin:0;
+font-size:22px;
 }
 
-/* GRID */
-
-.galleryGrid {
-  column-count: 3;
-  column-gap: 16px;
+.galleryHeader p{
+margin:2px 0 0;
+font-size:13px;
+color:#64748b;
 }
+
+/* ADD BUTTON */
+
+.addGalleryBtn{
+background:#2563eb;
+color:white;
+border:none;
+padding:8px 18px;
+border-radius:6px;
+cursor:pointer;
+font-size:13px;
+}
+
+.addGalleryBtn:hover{
+background:#1d4ed8;
+}
+
+/* ===== SEARCH ===== */
+
+.galleryTools{
+margin-bottom:20px;
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+
+.galleryTools input{
+width:260px;
+padding:8px;
+border-radius:6px;
+border:1px solid #cbd5e1;
+}
+
+/* ===== GRID ===== */
+
+.galleryGrid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+gap:18px;
+}
+
+/* ===== CARD ===== */
+
+.galleryCard{
+background:white;
+border-radius:10px;
+overflow:hidden;
+box-shadow:0 3px 8px rgba(0,0,0,0.06);
+transition:0.25s;
+}
+
+.galleryCard:hover{
+transform:translateY(-4px);
+box-shadow:0 8px 16px rgba(0,0,0,0.08);
+}
+
+/* ===== IMAGE ===== */
+
+.galleryImage{
+position:relative;
+}
+
+.galleryImage img{
+width:100%;
+height:180px;
+object-fit:cover;
+}
+
+/* ===== ACTION BUTTONS ===== */
+
+.galleryOverlay{
+position:absolute;
+top:10px;
+right:10px;
+display:flex;
+gap:6px;
+opacity:0;
+transition:.2s;
+}
+
+.galleryCard:hover .galleryOverlay{
+opacity:1;
+}
+
+.galleryOverlay button{
+border:none;
+background:white;
+padding:6px;
+border-radius:5px;
+cursor:pointer;
+}
+
+.galleryOverlay .delete{
+background:#ef4444;
+color:white;
+}
+
+/* ===== BODY ===== */
+
+.galleryCardBody{
+padding:12px;
+}
+
+.galleryCardBody p{
+margin:0;
+font-size:13px;
+color:#64748b;
+}
+
+/* ===== EMPTY / LOADING ===== */
+
+.emptyBox,
+.loadingBox{
+text-align:center;
+padding:40px;
+color:#475569;
+}
+
+/* ========================= */
+/* ===== TABLET VIEW ===== */
+/* ========================= */
 
 @media(max-width:900px){
-  .galleryGrid {
-    column-count: 2;
-  }
+
+.galleryGrid{
+grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
 }
+
+}
+
+/* ========================= */
+/* ===== MOBILE VIEW ===== */
+/* ========================= */
 
 @media(max-width:600px){
-  .galleryGrid {
-    column-count: 1;
-  }
+
+.manageGalleryPage{
+padding:16px;
 }
 
-/* CARD */
+/* HEADER STACK */
 
-.galleryCard {
-  break-inside: avoid;
-  margin-bottom: 16px;
-  background: white;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+.galleryHeader{
+flex-direction:column;
+align-items:flex-start;
 }
 
-/* IMAGE */
+/* BUTTON FULL WIDTH */
 
-.imgWrapper {
-  position: relative;
+.addGalleryBtn{
+width:100%;
+text-align:center;
 }
 
-.imgWrapper img {
-  width: 100%;
-  display: block;
+/* SEARCH FULL WIDTH */
+
+.galleryTools input{
+width:100%;
 }
 
-/* HOVER */
+/* GRID SMALLER */
 
-.imgOverlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transition: 0.2s;
+.galleryGrid{
+grid-template-columns:1fr 1fr;
+gap:12px;
 }
 
-.imgWrapper:hover .imgOverlay {
-  opacity: 1;
+/* IMAGE SMALLER */
+
+.galleryImage img{
+height:140px;
 }
 
-.imgOverlay button {
-  background: #ef4444;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 5px;
-  cursor: pointer;
 }
 
-/* CAPTION */
+/* ========================= */
+/* ===== SMALL MOBILE ===== */
+/* ========================= */
 
-.caption {
-  padding: 10px;
-  font-size: 14px;
+@media(max-width:420px){
+
+.galleryGrid{
+grid-template-columns:1fr;
 }
 
-/* EMPTY */
+.galleryImage img{
+height:160px;
+}
 
-.emptyBox {
-  text-align: center;
-  padding: 40px;
 }

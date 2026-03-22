@@ -28,6 +28,7 @@ import NotFound from "./pages/NotFound/NotFound.jsx";
 import AdminDashboard from "./pages/Admin/Dashboard/AdminDashboard.jsx";
 import ManageNews from "./pages/Admin/Management/ManageNews.jsx";
 import Profile from "./pages/Admin/Dashboard/Profile.jsx";
+import FacultyDetails from "./pages/Faculty/FacultyDetails.jsx";
 // import AddNews from "./pages/Admin/Management/AddNews.jsx";
 // import EditNews from "./pages/Admin/Management/EditNews.jsx";
 
@@ -51,6 +52,7 @@ export default function App() {
         <Route path="/events" element={<Events />} />
         <Route path="/exam" element={<Exam />} />
         <Route path="/faculty" element={<Faculty />} />
+        <Route path="/faculty/:id" element={<FacultyDetails />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/news" element={<News />} />
         <Route path="/notices" element={<Notices />} />
