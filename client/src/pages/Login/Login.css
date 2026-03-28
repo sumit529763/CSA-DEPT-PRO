@@ -209,3 +209,35 @@
   margin-bottom: 12px;
   font-size: 0.85rem;
 }
+
+
+
+.captcha-section {
+  background: #f3f4f6;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #e5e7eb;
+}
+
+.captcha-section label {
+  display: block;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+.captcha-input {
+  width: 100%;
+  padding: 8px;
+  border: 1.5px solid #d1d5db;
+  border-radius: 6px;
+  font-weight: bold;
+  color: #111827;
+}
+
+.captcha-input:focus {
+  border-color: #2563eb;
+  outline: none;
+}

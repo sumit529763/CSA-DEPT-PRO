@@ -1,44 +1,30 @@
 const User = require("../models/User.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const axios = require("axios");
+const { logAction } = require("../middleware/logger");
 
 exports.login = async (req, res) => {
   try {
-    const { email, password, captchaToken } = req.body;
+    const { email, password, captchaAnswer, num1, num2 } = req.body;
 
-    // ================= VALIDATION =================
-    if (!email || !password || !captchaToken) {
+    // 1. Validation
+    if (!email || !password || captchaAnswer === undefined) {
       return res.status(400).json({
         success: false,
         message: "Email, password, and captcha are required",
       });
     }
 
-    // ================= CAPTCHA VERIFY =================
-    const captchaVerifyURL = "https://www.google.com/recaptcha/api/siteverify";
-
-    const captchaResponse = await axios.post(
-      captchaVerifyURL,
-      null,
-      {
-        params: {
-          secret: process.env.RECAPTCHA_SECRET_KEY,
-          response: captchaToken,
-        },
-      }
-    );
-
-    if (!captchaResponse.data.success) {
+    // 2. Math Captcha Verification (Server-Side double check)
+    if (parseInt(captchaAnswer) !== parseInt(num1) + parseInt(num2)) {
       return res.status(400).json({
         success: false,
-        message: "Captcha verification failed",
+        message: "Incorrect captcha answer. Please try again.",
       });
     }
 
-    // ================= FIND USER =================
+    // 3. Find User
     const user = await User.findOne({ email });
-
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -46,9 +32,8 @@ exports.login = async (req, res) => {
       });
     }
 
-    // ================= PASSWORD CHECK =================
+    // 4. Password Check
     const isMatch = await bcrypt.compare(password, user.password);
-
     if (!isMatch) {
       return res.status(401).json({
         success: false,
@@ -56,19 +41,16 @@ exports.login = async (req, res) => {
       });
     }
 
-    // ================= JWT TOKEN =================
-    const payload = {
-      id: user._id,
-      role: user.role,
-    };
+    // ✨ AUDIT LOG: Record the login after successful authentication
+    await logAction(user._id, "LOGIN", `Admin logged into the system`, req);
 
+    // 5. JWT Token
     const token = jwt.sign(
-      payload,
+      { id: user._id, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
 
-    // ================= RESPONSE =================
     return res.status(200).json({
       success: true,
       message: "Login successful",
@@ -77,15 +59,12 @@ exports.login = async (req, res) => {
         id: user._id,
         email: user.email,
         role: user.role,
+        name: user.name
       },
     });
 
   } catch (error) {
     console.error("LOGIN ERROR:", error);
-
-    return res.status(500).json({
-      success: false,
-      message: "Server error",
-    });
+    return res.status(500).json({ success: false, message: "Server error" });
   }
 };

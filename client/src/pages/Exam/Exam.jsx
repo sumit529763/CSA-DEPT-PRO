@@ -1,54 +1,59 @@
 // src/pages/Exam/Exam.jsx
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import SectionTitle from '../../components/UI/SectionTitle';
 import Card from '../../components/UI/Card';
 import './Exam.css';
 
+const TABS = ['Schedules', 'Results', 'Resources'];
+
 export default function Exam() {
   const [activeTab, setActiveTab] = useState('Schedules');
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Simulating data fetch when page loads or tab changes
-    setLoading(true);
-    const timer = setTimeout(() => setLoading(false), 800);
-    return () => clearTimeout(timer);
-  }, [activeTab]);
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/api/exam?category=${activeTab}`
+        );
+        setData(res.data.data || []);
+      } catch (err) {
+        console.error('Failed to fetch exam data:', err);
+        setError('Could not load data. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const examData = {
-    Schedules: [
-      { id: 1, title: "BCA 1st Year Semester-I Final Exam", date: "Feb 10, 2026", code: "CS-101" },
-      { id: 2, title: "BCA 2nd Year Semester-III Final Exam", date: "Feb 12, 2026", code: "CS-302" },
-      { id: 3, title: "BCA 3rd Year Semester-V Lab Viva-Voce", date: "Feb 05, 2026", code: "CS-505P" },
-    ],
-    Results: [
-      { id: 4, title: "BCA Semester-II (Backlog) Results - 2025", releaseDate: "Jan 10, 2026" },
-      { id: 5, title: "BCA Semester-IV Regular Results - 2025", releaseDate: "Dec 28, 2025" },
-    ],
-    Resources: [
-      { id: 6, title: "Examination Rules & Regulations Handbook", type: "PDF" },
-      { id: 7, title: "Admit Card Download (Feb 2026 Session)", type: "Link" },
-    ]
-  };
+    fetchData();
+  }, [activeTab]);
 
   return (
     <div className="exam-page container section-padding">
-      <SectionTitle 
-        title="Examination Cell" 
-        subtitle="Manage your academic assessment schedules and check results" 
+      <SectionTitle
+        title="Examination Cell"
+        subtitle="Manage your academic assessment schedules and check results"
       />
 
       <div className="exam-alert">
-        <div className="alert-icon"><i className="fas fa-exclamation-circle"></i></div>
+        <div className="alert-icon">
+          <i className="fas fa-exclamation-circle"></i>
+        </div>
         <div className="alert-text">
-          <strong>Active Notification:</strong> Fill up of Semester Examination forms for Feb-2026 session is open until Jan 25, 2026.
+          <strong>Note:</strong> Check the Schedules tab for the latest exam
+          timetables and the Results tab for declared results.
         </div>
       </div>
 
       <div className="exam-tabs">
-        {Object.keys(examData).map(tab => (
-          <button 
-            key={tab} 
+        {TABS.map((tab) => (
+          <button
+            key={tab}
             className={`tab-btn ${activeTab === tab ? 'active' : ''}`}
             onClick={() => setActiveTab(tab)}
           >
@@ -59,9 +64,8 @@ export default function Exam() {
 
       <div className="exam-content">
         {loading ? (
-          /* --- SKELETON STATE FOR EXAM LIST --- */
           <div className="exam-list">
-            {[1, 2, 3].map(n => (
+            {[1, 2, 3].map((n) => (
               <div key={n} className="exam-item skeleton-row">
                 <div className="exam-info">
                   <div className="skeleton sk-text-short"></div>
@@ -71,19 +75,50 @@ export default function Exam() {
               </div>
             ))}
           </div>
+        ) : error ? (
+          <div className="no-exam-data">
+            <p>{error}</p>
+          </div>
+        ) : data.length === 0 ? (
+          <div className="no-exam-data">
+            <p>No {activeTab.toLowerCase()} available at this time.</p>
+          </div>
         ) : (
-          /* --- ACTUAL CONTENT --- */
           <>
             {activeTab === 'Schedules' && (
               <div className="exam-list">
-                {examData.Schedules.map(exam => (
-                  <div key={exam.id} className="exam-item">
+                {data.map((exam) => (
+                  <div key={exam._id} className="exam-item">
                     <div className="exam-info">
-                      <span className="exam-code">{exam.code}</span>
+                      {exam.code && (
+                        <span className="exam-code">{exam.code}</span>
+                      )}
                       <h4 className="exam-title">{exam.title}</h4>
                     </div>
-                    <div className="exam-date"><i className="far fa-clock"></i> {exam.date}</div>
-                    <button className="btn-download">Download Time-Table</button>
+                    {exam.examDate && (
+                      <div className="exam-date">
+                        <i className="far fa-clock"></i>{' '}
+                        {new Date(exam.examDate).toLocaleDateString('en-IN', {
+                          day: '2-digit',
+                          month: 'short',
+                          year: 'numeric',
+                        })}
+                      </div>
+                    )}
+                    {exam.fileUrl ? (
+                      <a
+                        href={exam.fileUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="btn-download"
+                      >
+                        Download Time-Table
+                      </a>
+                    ) : (
+                      <button className="btn-download" disabled>
+                        No File
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
@@ -91,13 +126,34 @@ export default function Exam() {
 
             {activeTab === 'Results' && (
               <div className="exam-list">
-                {examData.Results.map(res => (
-                  <div key={res.id} className="exam-item">
+                {data.map((res) => (
+                  <div key={res._id} className="exam-item">
                     <div className="exam-info">
                       <h4 className="exam-title">{res.title}</h4>
-                      <p className="release-date">Released on: {res.releaseDate}</p>
+                      {res.releaseDate && (
+                        <p className="release-date">
+                          Released on:{' '}
+                          {new Date(res.releaseDate).toLocaleDateString(
+                            'en-IN',
+                            { day: '2-digit', month: 'short', year: 'numeric' }
+                          )}
+                        </p>
+                      )}
                     </div>
-                    <button className="btn-view-res">View Result</button>
+                    {res.fileUrl ? (
+                      <a
+                        href={res.fileUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="btn-view-res"
+                      >
+                        View Result
+                      </a>
+                    ) : (
+                      <button className="btn-view-res" disabled>
+                        Not Available
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
@@ -105,11 +161,28 @@ export default function Exam() {
 
             {activeTab === 'Resources' && (
               <div className="resource-grid">
-                {examData.Resources.map(res => (
-                  <Card key={res.id} className="resource-card">
-                    <i className={`fas ${res.type === 'PDF' ? 'fa-file-pdf' : 'fa-link'} res-icon`}></i>
-                    <h4>{res.title}</h4>
-                    <a href="#" className="res-link">Access {res.type}</a>
+                {data.map((resource) => (
+                  <Card key={resource._id} className="resource-card">
+                    <i
+                      className={`fas ${
+                        resource.resourceType === 'PDF'
+                          ? 'fa-file-pdf'
+                          : 'fa-link'
+                      } res-icon`}
+                    ></i>
+                    <h4>{resource.title}</h4>
+                    {resource.fileUrl ? (
+                      <a
+                        href={resource.fileUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="res-link"
+                      >
+                        Access {resource.resourceType || 'File'}
+                      </a>
+                    ) : (
+                      <span className="res-link disabled">Not Available</span>
+                    )}
                   </Card>
                 ))}
               </div>

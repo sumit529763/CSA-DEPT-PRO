@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import SectionTitle from '../../components/UI/SectionTitle'; // Ensure this path is correct!
+import SectionTitle from '../../components/UI/SectionTitle'; 
 import './Gallery.css';
 
 export default function Gallery() {
@@ -12,7 +12,8 @@ export default function Gallery() {
     const fetchImages = async () => {
       try {
         setLoading(true);
-        const API_URL = `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"}/api/gallery`;
+        // FIXED: Removed the hardcoded localhost fallback to ensure it uses Render in production
+        const API_URL = `${import.meta.env.VITE_API_BASE_URL}/api/gallery`;
         const res = await axios.get(API_URL);
         setImages(res.data.data || []);
       } catch (err) {
@@ -65,8 +66,12 @@ export default function Gallery() {
           filteredImages.map((image) => (
             <div key={image._id} className="gallery-item">
               <div className="gallery-img-container">
-                {/* Fallback added here to ensure Cloudinary links don't break */}
-                <img src={image.image || image.imageUrl || image.url} alt={image.caption} loading="lazy" />
+                {/* Fallback to ensure Cloudinary or stored URLs work */}
+                <img 
+                  src={image.image || image.imageUrl || image.url} 
+                  alt={image.caption} 
+                  loading="lazy" 
+                />
                 <div className="gallery-overlay">
                   <span className="gallery-cat-label">{image.category}</span>
                   <h4 className="gallery-img-title">{image.caption}</h4>

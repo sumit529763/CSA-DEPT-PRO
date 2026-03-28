@@ -1,20 +1,23 @@
+// server/src/routes/userRoutes.js
 const express = require("express");
 const router = express.Router();
-
 const {
   createUser,
   getUsers,
-  deleteUser,
   updateUser,
+  deleteUser,
+  toggleUserStatus,
 } = require("../controllers/userController");
-
 const { protect, isSuperAdmin } = require("../middleware/auth.middleware");
 const upload = require("../middleware/upload.middleware");
 
-// SuperAdmin only routes
-router.post("/create", protect, isSuperAdmin, upload.single("photo"), createUser);
-router.get("/", protect, isSuperAdmin, getUsers);
-router.delete("/:id", protect, isSuperAdmin, deleteUser);
-router.put("/:id", protect, isSuperAdmin, upload.single("photo"), updateUser);
+router.use(protect);
+router.use(isSuperAdmin);
+
+router.get("/",                                getUsers);
+router.post("/create", upload.single("photo"), createUser);
+router.put("/:id",     upload.single("photo"), updateUser);
+router.delete("/:id",                          deleteUser);
+router.patch("/:id/toggle",                    toggleUserStatus);
 
 module.exports = router;

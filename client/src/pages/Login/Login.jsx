@@ -1,23 +1,37 @@
+// src/pages/Login/Login.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
-import ReCAPTCHA from "react-google-recaptcha";
 import "./Login.css";
 
 export default function Login() {
-
-  const [email, setEmail] = useState("");
+  const [email, setEmail]       = useState("");
   const [password, setPassword] = useState("");
-  const [captchaToken, setCaptchaToken] = useState(null);
-  const [error, setError] = useState("");
+
+  // Math Captcha States
+  const [captchaData, setCaptchaData] = useState({ num1: 0, num2: 0 });
+  const [userAnswer, setUserAnswer]   = useState("");
+
+  const [error, setError]             = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const { login, user, loading } = useAuth();
   const navigate = useNavigate();
 
- 
-  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+  // Generate new math captcha question
+  const generateCaptcha = () => {
+    setCaptchaData({
+      num1: Math.floor(Math.random() * 10) + 1,
+      num2: Math.floor(Math.random() * 10) + 1,
+    });
+    setUserAnswer("");
+  };
 
+  useEffect(() => {
+    generateCaptcha();
+  }, []);
+
+  // ✅ Safe redirect — if already logged in, skip login page
   useEffect(() => {
     if (!loading && user) {
       if (user.role === "superadmin") {
@@ -32,25 +46,35 @@ export default function Login() {
     e.preventDefault();
     setError("");
 
-    if (!captchaToken) {
-      setError("Please verify that you are not a robot.");
+    // Frontend captcha check
+    if (parseInt(userAnswer) !== captchaData.num1 + captchaData.num2) {
+      setError("Incorrect captcha. Please solve the math correctly.");
+      generateCaptcha();
       return;
     }
 
     setIsLoggingIn(true);
 
     try {
-      const response = await login(email, password, captchaToken);
+      const data = await login(
+        email,
+        password,
+        userAnswer,
+        captchaData.num1,
+        captchaData.num2
+      );
 
-      if (response.user.role === "superadmin") {
+      // ✅ Role-based redirect after successful login
+      if (data.user.role === "superadmin") {
         navigate("/admin/super/users", { replace: true });
       } else {
         navigate("/admin/dashboard", { replace: true });
       }
 
-    } catch (error) {
+    } catch (err) {
       setIsLoggingIn(false);
-      setError(error.response?.data?.message || "Login failed.");
+      setError(err.response?.data?.message || "Login failed.");
+      generateCaptcha();
     }
   };
 
@@ -67,12 +91,9 @@ export default function Login() {
     <main className="login-page">
       <section className="login-card">
         <h2 className="login-title">Admin Login</h2>
-        <p className="login-subtitle">
-          Authorized users only. Please login to continue.
-        </p>
+        <p className="login-subtitle">CSA Department Access Control</p>
 
         <form className="login-form" onSubmit={handleSubmit}>
-
           {error && <div className="login-error">{error}</div>}
 
           <div className="form-group">
@@ -93,25 +114,24 @@ export default function Login() {
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
               required
             />
           </div>
 
-          <div style={{ marginBottom: "20px" }}>
-            <ReCAPTCHA
-              sitekey={siteKey}
-              onChange={(token) => setCaptchaToken(token)}
+          <div className="captcha-section">
+            <label>Verify: {captchaData.num1} + {captchaData.num2} = ?</label>
+            <input
+              type="number"
+              placeholder="Enter result"
+              value={userAnswer}
+              onChange={(e) => setUserAnswer(e.target.value)}
+              className="captcha-input"
+              required
             />
           </div>
 
-          <button type="submit" className="login-btn">
-            Login
-          </button>
-
-          <p className="login-note">
-            Need access? Contact HOD or system administrator.
-          </p>
-
+          <button type="submit" className="login-btn">Login</button>
         </form>
       </section>
     </main>

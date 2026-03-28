@@ -3,25 +3,26 @@ import axios from "axios";
 import GalleryForm from "./GalleryForm";
 import "./ManageGallery.css";
 
-export default function ManageGallery() {
-  const API_URL = `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"}/api/gallery`;
+const CATEGORIES = ["Infrastructure", "Events", "Sports", "Cultural", "Academic", "Other"];
 
-  const [images, setImages] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
+export default function ManageGallery() {
+  const API_URL = `${import.meta.env.VITE_API_BASE_URL}/api/gallery`;
+
+  const [images, setImages]           = useState([]);
+  const [filtered, setFiltered]       = useState([]);
+  const [loading, setLoading]         = useState(true);
+  const [showModal, setShowModal]     = useState(false);
+  const [isEdit, setIsEdit]           = useState(false);
   const [loadingAction, setLoadingAction] = useState(false);
+  const [search, setSearch]           = useState("");
+  const [activeCategory, setActiveCategory] = useState("All");
 
   const [formData, setFormData] = useState({
-    caption: "",
-    category: "Infrastructure",
-    id: null
+    caption: "", category: "Infrastructure", id: null,
   });
-
-  const [image, setImage] = useState(null);
+  const [image, setImage]   = useState(null);
   const [preview, setPreview] = useState("");
 
-  /* FETCH GALLERY */
   const fetchGallery = async () => {
     try {
       setLoading(true);
@@ -34,37 +35,35 @@ export default function ManageGallery() {
     }
   };
 
-  useEffect(() => {
-    fetchGallery();
-  }, []);
+  useEffect(() => { fetchGallery(); }, []);
 
-  /* SUBMIT IMAGE */
+  useEffect(() => {
+    let temp = [...images];
+    if (activeCategory !== "All")
+      temp = temp.filter((img) => img.category === activeCategory);
+    if (search)
+      temp = temp.filter((img) =>
+        img.caption?.toLowerCase().includes(search.toLowerCase())
+      );
+    setFiltered(temp);
+  }, [images, activeCategory, search]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
-    const data = new FormData();
-    
-    data.append("caption", formData.caption);
+    const data  = new FormData();
+    data.append("caption",  formData.caption);
     data.append("category", formData.category);
     if (image) data.append("image", image);
-
     try {
       setLoadingAction(true);
       const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data"
-        }
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" },
       };
-
-      if (isEdit) {
-        await axios.put(`${API_URL}/${formData.id}`, data, config);
-      } else {
-        await axios.post(API_URL, data, config);
-      }
-
+      if (isEdit) await axios.put(`${API_URL}/${formData.id}`, data, config);
+      else        await axios.post(API_URL, data, config);
       setShowModal(false);
-      fetchGallery(); // Refresh grid after upload
+      fetchGallery();
     } catch (err) {
       alert(err.response?.data?.message || "Operation failed");
     } finally {
@@ -72,41 +71,191 @@ export default function ManageGallery() {
     }
   };
 
-  /* DELETE IMAGE */
-  const deleteImage = async (id) => {
-    const token = localStorage.getItem("token");
-    if (!window.confirm("Are you sure you want to delete this image?")) return;
+  const handleOpenAdd = () => {
+    setIsEdit(false);
+    setFormData({ caption: "", category: "Infrastructure", id: null });
+    setPreview("");
+    setImage(null);
+    setShowModal(true);
+  };
 
+  const handleOpenEdit = (item) => {
+    setIsEdit(true);
+    setFormData({ caption: item.caption, category: item.category, id: item._id });
+    setPreview(item.image || item.imageUrl || item.url || "");
+    setImage(null);
+    setShowModal(true);
+  };
+
+  const handleDelete = async (id, caption) => {
+    if (!window.confirm(`Delete "${caption}"?`)) return;
+    const token = localStorage.getItem("token");
     try {
       await axios.delete(`${API_URL}/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
-      fetchGallery(); // Refresh grid after delete
+      fetchGallery();
     } catch {
       alert("Delete failed");
     }
   };
 
+  const categoryCount = (cat) =>
+    cat === "All" ? images.length : images.filter((i) => i.category === cat).length;
+
   return (
-    <div className="manageGalleryPage" style={{ padding: '20px' }}>
-      
-      <div className="galleryHeader" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-        <h2>Manage Gallery</h2>
-        <button
-          className="addGalleryBtn"
-          style={{ background: '#2563eb', color: '#fff', padding: '10px 20px', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
-          onClick={() => {
-            setIsEdit(false);
-            setFormData({ caption: "", category: "Infrastructure", id: null });
-            setPreview("");
-            setImage(null);
-            setShowModal(true);
-          }}
-        >
-          + Add Image
+    <div className="gallery-page">
+
+      {/* HEADER */}
+      <div className="gallery-header">
+        <div>
+          <h2>Manage Gallery</h2>
+          <p>Upload, organise and manage department photo gallery</p>
+        </div>
+        <button className="gallery-add-btn" onClick={handleOpenAdd}>
+          <i className="fas fa-plus" />
+          <span>Add Image</span>
         </button>
       </div>
 
+      {/* STATS */}
+      <div className="gallery-stats">
+        <div className="gallery-stat">
+          <i className="fas fa-images gallery-stat-icon" />
+          <div className="gallery-stat-info">
+            <span className="gallery-stat-num">{images.length}</span>
+            <span className="gallery-stat-label">Total Images</span>
+          </div>
+        </div>
+        <div className="gallery-stat">
+          <i className="fas fa-layer-group gallery-stat-icon" />
+          <div className="gallery-stat-info">
+            <span className="gallery-stat-num">
+              {[...new Set(images.map((i) => i.category))].length}
+            </span>
+            <span className="gallery-stat-label">Categories</span>
+          </div>
+        </div>
+        <div className="gallery-stat">
+          <i className="fas fa-star gallery-stat-icon" />
+          <div className="gallery-stat-info">
+            <span className="gallery-stat-num">
+              {images.filter((i) => i.category === "Events").length}
+            </span>
+            <span className="gallery-stat-label">Events</span>
+          </div>
+        </div>
+        <div className="gallery-stat">
+          <i className="fas fa-filter gallery-stat-icon" />
+          <div className="gallery-stat-info">
+            <span className="gallery-stat-num">{filtered.length}</span>
+            <span className="gallery-stat-label">Showing</span>
+          </div>
+        </div>
+      </div>
+
+      {/* CATEGORY TABS */}
+      <div className="gallery-tabs">
+        {["All", ...CATEGORIES].map((cat) => (
+          <button
+            key={cat}
+            className={`gallery-tab ${activeCategory === cat ? "active" : ""}`}
+            onClick={() => { setActiveCategory(cat); setSearch(""); }}
+          >
+            <span>{cat}</span>
+            <span className="gallery-tab-count">{categoryCount(cat)}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* TOOLBAR */}
+      <div className="gallery-toolbar">
+        <div className="gallery-search">
+          <i className="fas fa-search" />
+          <input
+            type="text"
+            placeholder="Search by caption…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          {search && (
+            <button className="gallery-search-clear" onClick={() => setSearch("")}>✕</button>
+          )}
+        </div>
+        {!loading && (
+          <p className="gallery-count">
+            <strong>{filtered.length}</strong> image{filtered.length !== 1 ? "s" : ""}
+            {search && <span> matching "<strong>{search}</strong>"</span>}
+          </p>
+        )}
+      </div>
+
+      {/* CONTENT */}
+      {loading ? (
+        <div className="gallery-skeletons">
+          {[1,2,3,4,5,6].map((n) => (
+            <div key={n} className="gallery-skeleton-card">
+              <div className="gsk gsk-img" />
+              <div className="gsk-body">
+                <div className="gsk gsk-title" />
+                <div className="gsk gsk-tag" />
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : filtered.length === 0 ? (
+        <div className="gallery-empty">
+          <i className="fas fa-image" />
+          <h4>No Images Found</h4>
+          <p>
+            {search
+              ? `No results for "${search}"`
+              : 'Click "Add Image" to upload your first photo'}
+          </p>
+        </div>
+      ) : (
+        <div className="gallery-grid">
+          {filtered.map((item, idx) => (
+            <div className="gallery-card" key={item._id}>
+              {/* IMAGE */}
+              <div className="gc-image">
+                <img
+                  src={item.image || item.imageUrl || item.url || "https://placehold.co/400x220/e8edff/2554f0?text=No+Image"}
+                  alt={item.caption}
+                />
+                <div className="gc-index">#{idx + 1}</div>
+                <span className="gc-category-badge">{item.category}</span>
+                <div className="gc-overlay">
+                  <button className="gc-btn-edit" onClick={() => handleOpenEdit(item)}>
+                    <i className="fas fa-edit" /> Edit
+                  </button>
+                  <button className="gc-btn-delete" onClick={() => handleDelete(item._id, item.caption)}>
+                    <i className="fas fa-trash" />
+                  </button>
+                </div>
+              </div>
+
+              {/* BODY */}
+              <div className="gc-body">
+                <p className="gc-caption">{item.caption || "—"}</p>
+                <div className="gc-footer">
+                  <span className="gc-cat-tag">{item.category}</span>
+                  <div className="gc-actions">
+                    <button className="exam-btn-edit" onClick={() => handleOpenEdit(item)}>
+                      <i className="fas fa-edit" /> <span>Edit</span>
+                    </button>
+                    <button className="exam-btn-delete" onClick={() => handleDelete(item._id, item.caption)}>
+                      <i className="fas fa-trash" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* MODAL */}
       <GalleryForm
         show={showModal}
         onClose={() => setShowModal(false)}
@@ -117,42 +266,10 @@ export default function ManageGallery() {
         setFormData={setFormData}
         preview={preview}
         onImageChange={(e) => {
-          const file = e.target.files[0];
-          if (file) {
-            setImage(file);
-            setPreview(URL.createObjectURL(file));
-          }
+          const f = e.target.files[0];
+          if (f) { setImage(f); setPreview(URL.createObjectURL(f)); }
         }}
       />
-
-      {/* ADMIN IMAGE GRID */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
-        {loading ? (
-          <p>Loading images...</p>
-        ) : images.length === 0 ? (
-          <p>No images found. Click "+ Add Image" to start!</p>
-        ) : (
-          images.map((img) => (
-            <div key={img._id} style={{ border: '1px solid #e5e7eb', padding: '15px', borderRadius: '12px', background: 'white', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
-              <img 
-                src={img.image || img.imageUrl || img.url} 
-                alt={img.caption} 
-                style={{ width: '100%', height: '180px', objectFit: 'cover', borderRadius: '8px' }} 
-              />
-              <h4 style={{ margin: '12px 0 4px 0', fontSize: '18px', color: '#1f2937' }}>{img.caption}</h4>
-              <p style={{ margin: '0 0 15px 0', fontSize: '14px', color: '#6b7280', fontWeight: '500' }}>{img.category}</p>
-              
-              <button 
-                onClick={() => deleteImage(img._id)}
-                style={{ background: '#ef4444', color: 'white', border: 'none', padding: '8px', width: '100%', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', transition: '0.2s' }}
-              >
-                Delete Image
-              </button>
-            </div>
-          ))
-        )}
-      </div>
-
     </div>
   );
 }

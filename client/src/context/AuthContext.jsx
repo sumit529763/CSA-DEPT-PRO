@@ -1,3 +1,4 @@
+// src/context/AuthContext.jsx
 import { createContext, useContext, useState, useEffect } from "react";
 import { authService } from "../services/authService";
 
@@ -8,58 +9,41 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const restoreSession = () => {
+    const savedUser = localStorage.getItem("user");
+    const token = localStorage.getItem("token");
+    if (savedUser && token) {
       try {
-        const savedUser = localStorage.getItem("user");
-        const token = localStorage.getItem("token");
-
-        if (savedUser && token) {
-          setUser(JSON.parse(savedUser));
-        }
+        setUser(JSON.parse(savedUser));
       } catch (err) {
-        console.error("Session restoration failed:", err);
         localStorage.removeItem("user");
         localStorage.removeItem("token");
-      } finally {
-        setLoading(false);
       }
-    };
-
-    restoreSession();
+    }
+    setLoading(false);
   }, []);
 
-  // ✅ FIXED LOGIN (Now Accepts captchaToken)
-  const login = async (email, password, captchaToken) => {
-
-    const data = await authService.login(email, password, captchaToken);
-
+  const login = async (email, password, captchaAnswer, num1, num2) => {
+    const data = await authService.login(email, password, captchaAnswer, num1, num2);
     setUser(data.user);
-
     localStorage.setItem("user", JSON.stringify(data.user));
     localStorage.setItem("token", data.token);
-
     return data;
   };
 
   const logout = () => {
-    authService.logout();
     localStorage.removeItem("user");
     localStorage.removeItem("token");
     setUser(null);
   };
 
+  // ✅ ADD THESE 3 helpers — derived from user.role
+  const isLoggedIn   = !!user && !!localStorage.getItem("token");
+  const isAdmin      = user?.role === "admin" || user?.role === "superadmin";
   const isSuperAdmin = user?.role === "superadmin";
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        isSuperAdmin,
-        login,
-        logout,
-        loading
-      }}
-    >
+    // ✅ ADD isLoggedIn, isAdmin, isSuperAdmin to the value
+    <AuthContext.Provider value={{ user, login, logout, loading, isLoggedIn, isAdmin, isSuperAdmin }}>
       {children}
     </AuthContext.Provider>
   );
