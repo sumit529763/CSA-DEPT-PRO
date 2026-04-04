@@ -19,6 +19,8 @@ app.use("/api/events",  require("./routes/events.routes"));
 app.use("/api/gallery", require("./routes/gallery.routes"));
 app.use("/api/users",   require("./routes/userRoutes"));
 app.use("/api/logs",    auditRoutes);
+app.use("/api/faculty", require("./routes/faculty.routes"));
+app.use("/api/placements", require("./routes/placement.routes"));
 
 // ✅ NEW: Notices and Exam routes
 app.use("/api/notices", require("./routes/Notice.routes"));
