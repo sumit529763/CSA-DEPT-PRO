@@ -33,7 +33,10 @@ import ManageEvents from "./pages/Admin/Management/ManageEvents.jsx";
 import ManageGallery from "./pages/Admin/Management/ManageGallery.jsx";
 import ManageNotices from "./pages/Admin/Management/Managenotices.jsx";
 import ManageExam from "./pages/Admin/Management/Manageexam.jsx";
-import ManagePlacements from "./pages/Admin/Management/ManagePlacements";
+import ManagePlacements from "./pages/Admin/Management/ManagePlacements.jsx";
+import ManageAchievements from "./pages/Admin/Management/ManageAchievements.jsx";
+import ManageAlumni from "./pages/Admin/Management/ManageAlumni.jsx";
+import Achievements from "./pages/Achievements/Achievements.jsx";
 
 /* Super Admin Pages */
 import ManageUsers from "./pages/Admin/SuperAdmin/ManageUsers.jsx";
@@ -46,21 +49,23 @@ export default function App() {
   return (
     <>
       <Routes>
+
         {/* ===== PUBLIC WEBSITE ===== */}
         <Route element={<PublicLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/alumni" element={<Alumini />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/exam" element={<Exam />} />
-          <Route path="/faculty" element={<Faculty />} />
-          <Route path="/faculty/:id" element={<FacultyDetails />} />
-          <Route path="/gallery" element={<Gallery />} />
-          <Route path="/news" element={<News />} />
-          <Route path="/notices" element={<Notices />} />
-          <Route path="/placements" element={<Placement />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/calendar" element={<Calendar />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/"             element={<Home />} />
+          <Route path="/alumni"       element={<Alumini />} />
+          <Route path="/events"       element={<Events />} />
+          <Route path="/exam"         element={<Exam />} />
+          <Route path="/faculty"      element={<Faculty />} />
+          <Route path="/faculty/:id"  element={<FacultyDetails />} />
+          <Route path="/gallery"      element={<Gallery />} />
+          <Route path="/news"         element={<News />} />
+          <Route path="/notices"      element={<Notices />} />
+          <Route path="/placements"   element={<Placement />} />
+          <Route path="/achievements" element={<Achievements />} />
+          <Route path="/contact"      element={<Contact />} />
+          <Route path="/calendar"     element={<Calendar />} />
+          <Route path="/login"        element={<Login />} />
         </Route>
 
         {/* ===== ADMIN PANEL ===== */}
@@ -76,15 +81,17 @@ export default function App() {
 
           {/* Core — any admin */}
           <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="profile" element={<Profile />} />
+          <Route path="profile"   element={<Profile />} />
 
           {/* Content Management — any admin */}
-          <Route path="manage/news" element={<ManageNews />} />
-          <Route path="manage/events" element={<ManageEvents />} />
+          <Route path="manage/news"    element={<ManageNews />} />
+          <Route path="manage/events"  element={<ManageEvents />} />
           <Route path="manage/gallery" element={<ManageGallery />} />
           <Route path="manage/notices" element={<ManageNotices />} />
-          <Route path="manage/exam" element={<ManageExam />} />
-          <Route path="manage/placements" element={<ManagePlacements />} />
+          <Route path="manage/exam"    element={<ManageExam />} />
+          <Route path="manage/placements"    element={<ManagePlacements />} />
+          <Route path="manage/achievements" element={<ManageAchievements />} />
+          <Route path="manage/alumni"        element={<ManageAlumni />} />
 
           {/* Super Admin only */}
           <Route path="super" element={<Navigate to="users" replace />} />
@@ -108,6 +115,7 @@ export default function App() {
 
         {/* ===== FALLBACK ===== */}
         <Route path="*" element={<NotFound />} />
+
       </Routes>
 
       <ToastContainer />

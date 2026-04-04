@@ -24,6 +24,7 @@ export default function Sidebar({ isOpen, onClose }) {
       {isOpen && <div className="sidebar-overlay" onClick={onClose} />}
 
       <aside className={`admin-sidebar ${isOpen ? "open" : ""}`}>
+
         {/* BRAND */}
         <div className="sidebar-header">
           <div className="brand-icon">
@@ -44,9 +45,7 @@ export default function Sidebar({ isOpen, onClose }) {
             <div className="avatar-online" />
           </div>
           <div className="profile-details">
-            <span className="profile-name">
-              {user?.name || "Administrator"}
-            </span>
+            <span className="profile-name">{user?.name || "Administrator"}</span>
             <span className="profile-role">
               <i className="fas fa-shield-alt" />
               {isSuperAdmin ? "Super Admin" : "Admin"}
@@ -59,69 +58,61 @@ export default function Sidebar({ isOpen, onClose }) {
 
         {/* NAV */}
         <nav className="sidebar-nav">
+
           <p className="sidebar-divider">Overview</p>
           <NavLink to="/admin/dashboard" onClick={onClose} end>
-            <span className="nav-icon">
-              <i className="fas fa-th-large" />
-            </span>
+            <span className="nav-icon"><i className="fas fa-th-large" /></span>
             <span>Dashboard</span>
           </NavLink>
 
           <p className="sidebar-divider">Content</p>
           <NavLink to="/admin/manage/news" onClick={onClose}>
-            <span className="nav-icon">
-              <i className="fas fa-newspaper" />
-            </span>
+            <span className="nav-icon"><i className="fas fa-newspaper" /></span>
             <span>Manage News</span>
           </NavLink>
           <NavLink to="/admin/manage/events" onClick={onClose}>
-            <span className="nav-icon">
-              <i className="fas fa-calendar-alt" />
-            </span>
+            <span className="nav-icon"><i className="fas fa-calendar-alt" /></span>
             <span>Manage Events</span>
           </NavLink>
           <NavLink to="/admin/manage/gallery" onClick={onClose}>
-            <span className="nav-icon">
-              <i className="fas fa-images" />
-            </span>
+            <span className="nav-icon"><i className="fas fa-images" /></span>
             <span>Manage Gallery</span>
           </NavLink>
           <NavLink to="/admin/manage/notices" onClick={onClose}>
-            <span className="nav-icon">
-              <i className="fas fa-bell" />
-            </span>
+            <span className="nav-icon"><i className="fas fa-bell" /></span>
             <span>Manage Notices</span>
           </NavLink>
           <NavLink to="/admin/manage/exam" onClick={onClose}>
-            <span className="nav-icon">
-              <i className="fas fa-graduation-cap" />
-            </span>
+            <span className="nav-icon"><i className="fas fa-graduation-cap" /></span>
             <span>Manage Exam</span>
           </NavLink>
           <NavLink to="/admin/manage/placements" onClick={onClose}>
-            <span className="nav-icon">
-              <i className="fas fa-briefcase" />
-            </span>
+            <span className="nav-icon"><i className="fas fa-briefcase" /></span>
             <span>Manage Placements</span>
+          </NavLink>
+          <NavLink to="/admin/manage/achievements" onClick={onClose}>
+            <span className="nav-icon"><i className="fas fa-trophy" /></span>
+            <span>Manage Achievements</span>
+          </NavLink>
+          <NavLink to="/admin/manage/alumni" onClick={onClose}>
+            <span className="nav-icon"><i className="fas fa-user-graduate" /></span>
+            <span>Manage Alumni</span>
           </NavLink>
 
           {isSuperAdmin && (
             <>
               <p className="sidebar-divider">System Control</p>
               <NavLink to="/admin/super/users" onClick={onClose}>
-                <span className="nav-icon">
-                  <i className="fas fa-users-cog" />
-                </span>
+                <span className="nav-icon"><i className="fas fa-users-cog" /></span>
                 <span>Manage Users</span>
               </NavLink>
               <NavLink to="/admin/super/audit" onClick={onClose}>
-                <span className="nav-icon">
-                  <i className="fas fa-history" />
-                </span>
+                <span className="nav-icon"><i className="fas fa-history" /></span>
                 <span>Audit Logs</span>
               </NavLink>
             </>
           )}
+
         </nav>
 
         {/* FOOTER */}
@@ -135,6 +126,7 @@ export default function Sidebar({ isOpen, onClose }) {
             <span>Logout</span>
           </button>
         </div>
+
       </aside>
     </>
   );

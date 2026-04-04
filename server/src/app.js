@@ -19,16 +19,25 @@ app.use("/api/events",  require("./routes/events.routes"));
 app.use("/api/gallery", require("./routes/gallery.routes"));
 app.use("/api/users",   require("./routes/userRoutes"));
 app.use("/api/logs",    auditRoutes);
-app.use("/api/faculty", require("./routes/faculty.routes"));
-app.use("/api/placements", require("./routes/placement.routes"));
 
 // ✅ NEW: Notices and Exam routes
 app.use("/api/notices", require("./routes/Notice.routes"));
 app.use("/api/exam",    require("./routes/Exam.routes"));
 
+// ✅ Faculty — public view of admin users
+app.use("/api/faculty", require("./routes/faculty.routes"));
+
+
+
 // Root health check
 app.get("/", (req, res) => {
   res.send("Backend running ✅");
 });
+
+app.use("/api/placements", require("./routes/placement.routes"));
+
+app.use("/api/achievements", require("./routes/achievement.routes"));
+
+app.use("/api/alumni", require("./routes/alumni.routes"));
 
 module.exports = app;

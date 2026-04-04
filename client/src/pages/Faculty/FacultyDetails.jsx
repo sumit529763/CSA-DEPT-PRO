@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './FacultyDetails.css';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL; // ✅ fixed env var
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
 export default function FacultyDetails() {
   const { id }    = useParams();

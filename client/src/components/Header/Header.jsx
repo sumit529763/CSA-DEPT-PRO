@@ -32,7 +32,8 @@ const navLinks = [
   { to: "/notices", label: "Notices" },
   { to: "/faculty", label: "Faculty" },
   { to: "/placements", label: "Placements" },
-  { to: "/alumni", label: "Achivements" },
+  // { to: "/alumni", label: "Alumni" },
+  { to: "/achievements", label: "Achievements" },
 ];
 
 export default function Header() {

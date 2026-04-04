@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Faculty.css";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL; // ✅ fixed env var
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
 export default function Faculty() {
   const [loading, setLoading] = useState(true);

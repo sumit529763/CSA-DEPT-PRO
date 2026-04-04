@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Placement.css";
 
-const API = import.meta.env.VITE_API_BASE_URL;
+const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
 const COMPANY_COLORS = [
   "#4285F4","#EA4335","#0A66C2","#F25022",

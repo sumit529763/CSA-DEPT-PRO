@@ -36,6 +36,7 @@ export default function Navbar() {
     { to: "/events", label: "Events" },
     { to: "/placements", label: "Placements" },
     { to: "/alumni", label: "Alumni" },
+    { to: "/achievements", label: "Achievements" },
   ];
 
   // Helper function to navigate to correct dashboard
