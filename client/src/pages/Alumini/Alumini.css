@@ -1,121 +1,324 @@
-/* src/pages/Alumni/Alumni.css */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap');
 
-.alumni-banner {
-    background: linear-gradient(rgba(0, 51, 102, 0.9), rgba(0, 51, 102, 0.9)), 
-                url('https://images.unsplash.com/photo-1523050335392-9bc567597b81?q=80&w=1500');
-    background-size: cover;
-    background-position: center;
-    color: white;
-    padding: 60px 40px;
-    border-radius: 20px;
-    text-align: center;
-    margin-bottom: 60px;
+.al-page { background: #f7f8fc; min-height: 100vh; font-family: 'DM Sans', sans-serif; }
+
+/* ══════════════════════ HERO ══════════════════════ */
+.al-hero {
+  position: relative;
+  background: #001a3e;
+  overflow: hidden;
+  padding-top: 72px;
 }
 
-.banner-content h3 {
-    font-size: 2.2rem;
-    margin-bottom: 15px;
+.al-hero-bg { position: absolute; inset: 0; pointer-events: none; }
+.al-hb { position: absolute; border-radius: 50%; }
+.al-hb-1 { width:560px; height:560px; background: radial-gradient(circle, rgba(0,188,212,0.14), transparent 65%); top:-160px; right:-80px; }
+.al-hb-2 { width:360px; height:360px; background: radial-gradient(circle, rgba(0,74,173,0.2), transparent 65%);  bottom:-80px; left:5%; }
+.al-hb-3 { width:220px; height:220px; background: radial-gradient(circle, rgba(16,185,129,0.1), transparent 65%); top:40px; left:40%; }
+
+.al-hero-pattern {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
 }
 
-.banner-content p {
-    font-size: 1.1rem;
-    max-width: 600px;
-    margin: 0 auto 25px;
-    opacity: 0.9;
+.al-hero-content { position: relative; z-index: 2; padding-bottom: 48px; }
+
+.al-eyebrow {
+  display: inline-block;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; color: #00bcd4; margin-bottom: 14px;
 }
 
-.btn-join {
-    background: var(--color-accent, #007bff);
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 50px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: transform 0.3s ease;
+.al-hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  color: #fff; margin: 0 0 14px; line-height: 1.15;
+}
+.al-hero-title em { font-style: italic; color: #00bcd4; }
+
+.al-hero-sub {
+  font-size: 1rem; color: rgba(255,255,255,0.6);
+  max-width: 540px; line-height: 1.65; margin: 0 0 36px;
 }
 
-.btn-join:hover {
-    transform: translateY(-3px);
-    background: #0056b3;
+/* Hero stats */
+.al-hero-stats {
+  display: flex;
+  align-items: center;
+  gap: 24px;
 }
 
-.alumni-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 30px;
+.al-hstat {
+  display: flex; flex-direction: column;
+}
+.al-hstat strong { font-size: 1.8rem; font-weight: 800; color: #fff; line-height: 1; }
+.al-hstat span   { font-size: 0.75rem; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 3px; }
+
+.al-hstat-div {
+  width: 1px; height: 40px;
+  background: rgba(255,255,255,0.15);
 }
 
-.alumni-card {
-    border: 1px solid #edf2f7;
-    transition: all 0.3s ease !important;
+/* CTA strip */
+.al-cta-strip {
+  position: relative; z-index: 2;
+  background: rgba(0,188,212,0.12);
+  border-top: 1px solid rgba(0,188,212,0.2);
+  padding: 18px 0;
+}
+.al-cta-inner {
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 20px;
+  flex-wrap: wrap;
+}
+.al-cta-inner > div { display: flex; flex-direction: column; gap: 2px; }
+.al-cta-inner strong { color: #fff; font-size: 0.95rem; }
+.al-cta-inner span   { color: rgba(255,255,255,0.55); font-size: 0.85rem; }
+
+.al-cta-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #00bcd4; color: #001a3e;
+  padding: 11px 24px; border-radius: 50px;
+  font-weight: 700; font-size: 0.88rem;
+  text-decoration: none; white-space: nowrap;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 14px rgba(0,188,212,0.35);
+}
+.al-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,188,212,0.45); }
+
+/* ══════════════════════ BODY ══════════════════════ */
+.al-body { padding: 52px 0 80px; }
+
+/* ── Filter ── */
+.al-filter-wrap {
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid #f1f5f9;
+  padding: 24px 28px;
+  margin-bottom: 40px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
 }
 
-.alumni-card:hover {
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+.al-filter-head {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+}
+.al-fh-bar {
+  width: 5px; height: 48px;
+  background: linear-gradient(to bottom, #004aad, #00bcd4);
+  border-radius: 3px; flex-shrink: 0;
+}
+.al-fh-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem; color: #0f172a; margin: 0 0 3px;
+}
+.al-fh-sub { font-size: 0.84rem; color: #94a3b8; margin: 0; }
+
+.al-year-tabs { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.al-year-tab {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 20px; border-radius: 50px;
+  border: 2px solid #e2e8f0; background: #fff;
+  color: #475569; font-size: 0.86rem; font-weight: 600;
+  cursor: pointer; transition: all 0.22s; font-family: inherit;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+.al-year-tab i { font-size: 0.75rem; }
+.al-year-tab:hover {
+  border-color: #004aad; color: #004aad;
+  transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,74,173,0.12);
+}
+.al-year-tab.active {
+  background: linear-gradient(135deg, #004aad, #0066e0);
+  border-color: #004aad; color: #fff;
+  box-shadow: 0 6px 18px rgba(0,74,173,0.3);
+  transform: translateY(-2px);
 }
 
-.alumni-header {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
+.al-error {
+  background: #fff5f5; border: 1px solid #fca5a5; color: #dc2626;
+  padding: 12px 18px; border-radius: 9px; margin-bottom: 20px; font-size: 0.88rem;
 }
 
-.alumni-img {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #f0f4f8;
+/* Results heading */
+.al-results-head {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 28px;
+}
+.al-results-head h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem; color: #0f172a; margin: 0;
+}
+.al-count-pill {
+  background: #eff6ff; color: #1e40af;
+  border: 1px solid #bfdbfe;
+  padding: 4px 14px; border-radius: 50px;
+  font-size: 0.78rem; font-weight: 700;
 }
 
-.alumni-meta h4 {
-    color: var(--color-primary-dark);
-    font-size: 1.2rem;
+/* ── Highlights ── */
+.al-hl-section { margin-bottom: 36px; }
+.al-hl-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: linear-gradient(135deg, #d97706, #f59e0b);
+  color: #fff; padding: 6px 16px; border-radius: 50px;
+  font-size: 0.78rem; font-weight: 700; margin-bottom: 18px;
+  box-shadow: 0 3px 10px rgba(217,119,6,0.35);
+}
+.al-hl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 22px;
 }
 
-.alumni-batch {
-    font-size: 0.85rem;
-    color: #718096;
-    font-weight: 600;
+/* Divider */
+.al-divider {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 28px; color: #94a3b8; font-size: 0.82rem; font-weight: 600;
+}
+.al-divider::before, .al-divider::after {
+  content: ''; flex: 1; height: 1px; background: #e2e8f0;
 }
 
-.alumni-pos {
-    color: #2d3748;
-    margin-bottom: 2px;
+/* ── Grid ── */
+.al-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
 }
 
-.alumni-company {
-    font-size: 0.9rem;
-    color: var(--color-accent);
-    margin-bottom: 15px;
+/* ══════════════════════ CARD ══════════════════════ */
+.al-card {
+  background: #fff;
+  border-radius: 20px;
+  border: 1px solid #f1f5f9;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.28s, box-shadow 0.28s;
+  animation: alFadeUp 0.45s ease both;
+}
+.al-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 48px rgba(0,74,173,0.1);
 }
 
-.alumni-quote {
-    font-style: italic;
-    color: #4a5568;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    border-left: 3px solid #e2e8f0;
-    padding-left: 15px;
+/* Highlight card */
+.al-card-hl {
+  border: 2px solid #fde68a;
+  background: linear-gradient(160deg, #fffbeb 0%, #fff 55%);
+}
+.al-card-hl:hover { box-shadow: 0 20px 48px rgba(217,119,6,0.12); }
+
+/* Star badge */
+.al-star-badge {
+  position: absolute; top: 14px; right: 14px;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: linear-gradient(135deg, #d97706, #f59e0b);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 3px 10px rgba(217,119,6,0.4);
+}
+.al-star-badge i { color: #fff; font-size: 0.7rem; }
+
+/* Card top */
+.al-card-top {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
 }
 
-.alumni-footer {
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid #f7fafc;
+.al-avatar {
+  width: 64px; height: 64px; border-radius: 50%;
+  overflow: hidden; flex-shrink: 0;
+  background: linear-gradient(135deg, #004aad, #00bcd4);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; color: #fff; font-size: 1.2rem;
+  border: 3px solid #e2e8f0;
+}
+.al-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.al-avatar-hl  { border-color: #fde68a; }
+
+.al-batch-tag {
+  background: #0f172a; color: #fff;
+  padding: 4px 12px; border-radius: 50px;
+  font-size: 0.72rem; font-weight: 700;
 }
 
-.linkedin-link {
-    color: #0077b5;
-    text-decoration: none;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+/* Card body */
+.al-card-body { margin-bottom: 16px; }
+
+.al-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; color: #0f172a; margin: 0 0 4px; line-height: 1.3;
+}
+.al-position {
+  font-size: 0.85rem; font-weight: 600; color: #004aad;
+  margin: 0 0 10px;
+}
+.al-company-row, .al-location-row {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 0.82rem; color: #64748b; margin-bottom: 5px;
+}
+.al-company-row i, .al-location-row i {
+  color: #00bcd4; font-size: 0.72rem; width: 14px; text-align: center;
+}
+.al-quote {
+  font-size: 0.82rem; color: #64748b; font-style: italic;
+  line-height: 1.6; margin: 12px 0 0;
+  border-left: 3px solid #e2e8f0; padding-left: 12px;
 }
 
-@media (max-width: 640px) {
-    .banner-content h3 { font-size: 1.6rem; }
+/* Card footer */
+.al-card-footer {
+  border-top: 1px solid #f1f5f9; padding-top: 14px;
+}
+.al-linkedin-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  color: #0077b5; font-weight: 600; font-size: 0.82rem;
+  text-decoration: none; transition: gap 0.2s;
+}
+.al-linkedin-btn:hover { gap: 10px; }
+.al-linkedin-btn i { font-size: 1rem; }
+
+/* ── Empty ── */
+.al-empty {
+  text-align: center; padding: 80px 0; color: #94a3b8;
+}
+.al-empty-icon { font-size: 3rem; margin-bottom: 14px; }
+.al-empty h3 { font-size: 1.1rem; color: #475569; margin: 0 0 6px; }
+.al-empty p  { font-size: 0.88rem; margin: 0; }
+
+/* ── Skeleton ── */
+.skeleton {
+  background: linear-gradient(90deg, #e8edf2 25%, #f5f7fa 50%, #e8edf2 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite linear; border-radius: 8px;
+}
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+.al-tab-sk { width: 90px; height: 40px; border-radius: 50px; }
+.al-sk-avatar { width: 64px; height: 64px; border-radius: 50%; flex-shrink: 0; }
+.al-sk-body   { flex: 1; display: flex; flex-direction: column; gap: 10px; padding: 4px 0; }
+.al-sk-ln     { height: 14px; width: 80%; border-radius: 7px; }
+.al-sk-s      { width: 55%; }
+.al-sk-xs     { width: 35%; }
+.al-card.skeleton-card { display: flex; gap: 16px; align-items: flex-start; }
+
+/* ── Animation ── */
+@keyframes alFadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .al-hero-stats { gap: 16px; }
+  .al-hstat strong { font-size: 1.4rem; }
+  .al-hl-grid { grid-template-columns: 1fr; }
+  .al-grid    { grid-template-columns: 1fr 1fr; }
+  .al-cta-inner { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 480px) {
+  .al-grid { grid-template-columns: 1fr; }
+  .al-filter-wrap { padding: 18px 16px; }
 }

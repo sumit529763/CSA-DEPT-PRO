@@ -1,8 +1,0 @@
-{
-  "projects": {
-    "default": "csa-dept-pro",
-    "production": "csa-dept-pro"
-  },
-  "targets": {},
-  "etags": {}
-}

@@ -27,12 +27,13 @@ const navLinks = [
   // Centralized link data
   { to: "/", label: "Home", end: true },
   { to: "/news", label: "News" },
-  { to: "/notices", label: "Notices" },
-  { to: "/faculty", label: "Faculty" },
   { to: "/exam", label: "Exam" },
   { to: "/events", label: "Events" },
+  { to: "/notices", label: "Notices" },
+  { to: "/faculty", label: "Faculty" },
   { to: "/placements", label: "Placements" },
-  { to: "/alumni", label: "Alumni" },
+  // { to: "/alumni", label: "Alumni" },
+  { to: "/achievements", label: "Achievements" },
 ];
 
 export default function Header() {

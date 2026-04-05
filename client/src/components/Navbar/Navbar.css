@@ -126,6 +126,28 @@
 /* footer area in mobile menu */
 .mobile-menu-footer { margin-top:auto; padding-top:8px; border-top:1px solid var(--border-soft); }
 
+
+.btn-dashboard {
+  background: #2d3748 !important; /* Darker professional color */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-dashboard-mobile {
+  width: 100%;
+  border: none;
+  background: var(--primary);
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+
 /* Responsiveness: show hamburger on small screens, hide desktop nav */
 @media (max-width: 920px) {
   .desktop-nav,

@@ -1,55 +1,133 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext.jsx";
-import "../Styles/Sidebar.css";
+import "./Sidebar.css";
 
 export default function Sidebar({ isOpen, onClose }) {
   const { user, logout, isSuperAdmin } = useAuth();
+  const navigate = useNavigate();
+
+  const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : "A";
+
+  const handleProfileClick = () => {
+    navigate("/admin/profile");
+    if (window.innerWidth <= 900) onClose();
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
-    <aside className={`admin-sidebar ${isOpen ? "open" : ""}`}>
-      {/* Mobile close button */}
-      <button className="sidebar-close" onClick={onClose}>
-        ✕
-      </button>
+    <>
+      {isOpen && <div className="sidebar-overlay" onClick={onClose} />}
 
-      <div className="sidebar-header">
-        <h3>Admin Panel</h3>
-        <p>{user?.role?.toUpperCase()}</p>
-      </div>
+      <aside className={`admin-sidebar ${isOpen ? "open" : ""}`}>
 
-      <nav className="sidebar-nav">
-        <NavLink to="/admin/dashboard" onClick={onClose}>
-          Dashboard
-        </NavLink>
-        <NavLink to="/admin/manage/news" onClick={onClose}>
-          Manage News
-        </NavLink>
-        <NavLink to="/admin/manage/events" onClick={onClose}>
-          Manage Events
-        </NavLink>
-        <NavLink to="/admin/manage/gallery" onClick={onClose}>
-          Manage Gallery
-        </NavLink>
+        {/* BRAND */}
+        <div className="sidebar-header">
+          <div className="brand-icon">
+            <i className="fas fa-user-shield" />
+          </div>
+          <div className="brand-text">
+            <h3>CSA ADMIN</h3>
+            <Link to="/" className="view-site-link">
+              <i className="fas fa-globe" /> View Website
+            </Link>
+          </div>
+        </div>
 
-        {isSuperAdmin && (
-          <>
-            <div className="sidebar-divider">Super Admin</div>
-            {/* MUST match path="super/users" in App.jsx */}
-            <NavLink to="/admin/super/users" onClick={onClose}>
-              Manage Users
-            </NavLink>
-            {/* MUST match path="super/audit" in App.jsx */}
-            <NavLink to="/admin/super/audit" onClick={onClose}>
-              Audit Logs
-            </NavLink>
-          </>
-        )}
-      </nav>
+        {/* PROFILE CARD */}
+        <div className="sidebar-profile-card" onClick={handleProfileClick}>
+          <div className="profile-avatar">
+            <span>{userInitial}</span>
+            <div className="avatar-online" />
+          </div>
+          <div className="profile-details">
+            <span className="profile-name">{user?.name || "Administrator"}</span>
+            <span className="profile-role">
+              <i className="fas fa-shield-alt" />
+              {isSuperAdmin ? "Super Admin" : "Admin"}
+            </span>
+          </div>
+          <div className="profile-arrow-wrap">
+            <i className="fas fa-chevron-right" />
+          </div>
+        </div>
 
-      <button className="sidebar-logout" onClick={logout}>
-        Logout
-      </button>
-    </aside>
+        {/* NAV */}
+        <nav className="sidebar-nav">
+
+          <p className="sidebar-divider">Overview</p>
+          <NavLink to="/admin/dashboard" onClick={onClose} end>
+            <span className="nav-icon"><i className="fas fa-th-large" /></span>
+            <span>Dashboard</span>
+          </NavLink>
+
+          <p className="sidebar-divider">Content</p>
+          <NavLink to="/admin/manage/news" onClick={onClose}>
+            <span className="nav-icon"><i className="fas fa-newspaper" /></span>
+            <span>Manage News</span>
+          </NavLink>
+          <NavLink to="/admin/manage/events" onClick={onClose}>
+            <span className="nav-icon"><i className="fas fa-calendar-alt" /></span>
+            <span>Manage Events</span>
+          </NavLink>
+          <NavLink to="/admin/manage/gallery" onClick={onClose}>
+            <span className="nav-icon"><i className="fas fa-images" /></span>
+            <span>Manage Gallery</span>
+          </NavLink>
+          <NavLink to="/admin/manage/notices" onClick={onClose}>
+            <span className="nav-icon"><i className="fas fa-bell" /></span>
+            <span>Manage Notices</span>
+          </NavLink>
+          <NavLink to="/admin/manage/exam" onClick={onClose}>
+            <span className="nav-icon"><i className="fas fa-graduation-cap" /></span>
+            <span>Manage Exam</span>
+          </NavLink>
+          <NavLink to="/admin/manage/placements" onClick={onClose}>
+            <span className="nav-icon"><i className="fas fa-briefcase" /></span>
+            <span>Manage Placements</span>
+          </NavLink>
+          <NavLink to="/admin/manage/achievements" onClick={onClose}>
+            <span className="nav-icon"><i className="fas fa-trophy" /></span>
+            <span>Manage Achievements</span>
+          </NavLink>
+          <NavLink to="/admin/manage/alumni" onClick={onClose}>
+            <span className="nav-icon"><i className="fas fa-user-graduate" /></span>
+            <span>Manage Alumni</span>
+          </NavLink>
+
+          {isSuperAdmin && (
+            <>
+              <p className="sidebar-divider">System Control</p>
+              <NavLink to="/admin/super/users" onClick={onClose}>
+                <span className="nav-icon"><i className="fas fa-users-cog" /></span>
+                <span>Manage Users</span>
+              </NavLink>
+              <NavLink to="/admin/super/audit" onClick={onClose}>
+                <span className="nav-icon"><i className="fas fa-history" /></span>
+                <span>Audit Logs</span>
+              </NavLink>
+            </>
+          )}
+
+        </nav>
+
+        {/* FOOTER */}
+        <div className="sidebar-footer">
+          <div className="sidebar-footer-info">
+            <span className="footer-dot" />
+            <span>System Online</span>
+          </div>
+          <button className="sidebar-logout" onClick={handleLogout}>
+            <i className="fas fa-sign-out-alt" />
+            <span>Logout</span>
+          </button>
+        </div>
+
+      </aside>
+    </>
   );
 }
