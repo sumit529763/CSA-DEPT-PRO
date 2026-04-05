@@ -1,40 +1,87 @@
-# Node / package
+# ══════════════════════════════════════
+#  CSA-DEPT-PRO  —  .gitignore
+#  Monorepo: client (Vite + React) + server (Node/Express)
+# ══════════════════════════════════════
+
+# ── Dependencies ──────────────────────
 node_modules/
 package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ── Build outputs ─────────────────────
+dist/
+dist-ssr/
+build/
+*.local
+
+# ── Vite cache ────────────────────────
+.vite/
+client/.vite/
+
+# ── Environment / secrets ─────────────
+# NEVER commit .env files — they hold DB URIs,
+# JWT secrets, Cloudinary keys, Firebase config, etc.
+.env
+.env.*
+.env.local
+.env.*.local
+client/.env
+client/.env.*
+server/.env
+server/.env.*
+
+# ── Firebase ──────────────────────────
+.firebase/
+client/.firebase/
+.firebaserc          # contains project aliases — safe to commit if no secrets,
+                     # but ignored here to be safe. Remove this line if you want
+                     # to track it.
+firebase-debug.log
+firebase-debug.*.log
+ui-debug.log
+
+# ── Logs ──────────────────────────────
+logs/
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-
-# build outputs
-dist/
-dist-ssr/
-*.local
-
-
-# Logs
-logs/
-*.log
 lerna-debug.log*
+server/src/logs/
 
-# Editor / OS files
+# ── Server — temp uploads ─────────────
+# Multer may store files locally before uploading to Cloudinary
+server/uploads/
+server/tmp/
+uploads/
+tmp/
+
+# ── Editor / IDE ──────────────────────
 .vscode/
 !.vscode/extensions.json
 .idea/
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+*.swp
+*.swo
 
-# Environment / secrets
-.env
-.env.*.local
-.env.local
+# ── OS files ──────────────────────────
+.DS_Store          # macOS
+Thumbs.db          # Windows  ← you're on Windows (c:\MAJOR-PRO)
+ehthumbs.db
+Desktop.ini
 
-# Misc
+# ── Testing / Coverage ────────────────
 coverage/
+.nyc_output/
+
+# ── Misc tooling cache ────────────────
 .cache/
 .cache-loader/
 *.tgz
+.parcel-cache/
